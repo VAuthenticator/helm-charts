@@ -69,8 +69,6 @@ application:
 
   server:
     port: 8080
-    servlet:
-      contextPath: /vauthenticator
 
   baseUrl: http://application-example-host.com
 
@@ -145,8 +143,11 @@ managementUi:
 
   server:
     port: 8080
-    servlet:
-      contextPath: /vauthenticator-management-ui
+
+  sso:
+    clientApp:
+      clientId: vauthenticator-management-ui
+      clientSecret: secret
 
   baseUrl: http://application-example-host.com
 

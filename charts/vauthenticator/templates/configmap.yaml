@@ -58,7 +58,7 @@ data:
         oauth2:
           resourceserver:
             jwt:
-              jwk-set-uri: http://localhost:${server.port}${server.servlet.context-path}/oauth2/jwks
+              jwk-set-uri: http://localhost:${server.port}/oauth2/jwks
 
       redis:
         database: {{ .Values.application.redis.database }}
@@ -72,7 +72,7 @@ data:
       port: {{ .Values.application.server.port }}
       forward-headers-strategy: framework
       servlet:
-        context-path: {{ .Values.application.server.servlet.contextPath }}
+        context-path: /
       http2:
         enabled: true
       compression:
@@ -145,8 +145,8 @@ data:
           client:
             registration:
               client:
-                client-id: vauthenticator-management-ui
-                client-secret: secret
+                client-id: {{ .Values.managementUi.sso.clientApp.clientId }}
+                client-secret: {{ .Values.managementUi.sso.clientApp.clientSecret }}
                 client-name: VAuthenticator Management UI
                 provider: vauthenticator
                 scope:
@@ -177,7 +177,7 @@ data:
       port: {{ .Values.managementUi.server.port }}
       forward-headers-strategy: framework
       servlet:
-        context-path: {{ .Values.managementUi.server.servlet.contextPath }}
+        context-path: /
       http2:
         enabled: true
       compression:
@@ -201,8 +201,11 @@ data:
 
     vauthenticator:
       session-management:
+        enabled: true
         rp-iframe:
-          logout-uri: ${server.servlet.context-path}/oidc_logout.html
+          polling-rate: 5s
+          origin: ${vauthenticator.host}
+          logout-uri: /oidc_logout.html
       client:
         registrationId: client
       host: {{ .Values.application.baseUrl }}
