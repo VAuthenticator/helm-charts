@@ -71,6 +71,7 @@ application:
     port: 8080
 
   baseUrl: http://application-example-host.com
+  backChannelBaseUrl: http://vauthenticator:8080
 
   dynamoDb:
     account:

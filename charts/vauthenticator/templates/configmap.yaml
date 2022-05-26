@@ -46,8 +46,8 @@ metadata:
 data:
   application.yml: |
     endSessionWithoutDiscovery: true
-    oidcEndSessionUrl: {{ .Values.application.baseUrl }}/${server.servlet.context-path}/oidc/logout
-    auth.oidcIss: {{ .Values.application.baseUrl }}/${server.servlet.context-path}
+    oidcEndSessionUrl: {{ .Values.application.baseUrl }}/oidc/logout
+    auth.oidcIss: {{ .Values.application.baseUrl }}
     logging.file.name: /var/log/onlyone-portal/logs/${spring.application.name}.log
 
     spring:
@@ -159,10 +159,10 @@ data:
             provider:
               vauthenticator:
                 authorization-uri: {{ .Values.application.baseUrl }}/oauth2/authorize
-                token-uri: {{ .Values.application.baseUrl }}/oauth2/token
-                user-info-uri: {{ .Values.application.baseUrl }}/userinfo
+                token-uri: {{ .Values.application.backChannelBaseUrl }}/oauth2/token
+                user-info-uri: {{ .Values.application.backChannelBaseUrl }}/userinfo
                 user-info-authentication-method: header
-                jwk-set-uri: {{ .Values.application.baseUrl }}/oauth2/jwks
+                jwk-set-uri: {{ .Values.application.backChannelBaseUrl }}/oauth2/jwks
                 user-name-attribute: email
 
       redis:
@@ -203,6 +203,7 @@ data:
       session-management:
         enabled: true
         rp-iframe:
+          host: {{ .Values.managementUi.baseUrl }}
           polling-rate: 5s
           origin: ${vauthenticator.host}
           logout-uri: /oidc_logout.html
