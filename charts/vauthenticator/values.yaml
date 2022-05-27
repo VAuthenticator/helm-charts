@@ -73,6 +73,18 @@ application:
   baseUrl: http://application-example-host.com
   backChannelBaseUrl: http://vauthenticator:8080
 
+  mailProvider:
+    host: localhost
+    port: 587
+    username: ""
+    password: ""
+
+  signUpMail:
+    enabled: false
+    from: ""
+    subject: ""
+    bodyTemplate: ""
+
   dynamoDb:
     account:
       tableName: your_VAuthenticator_Account_table_name
