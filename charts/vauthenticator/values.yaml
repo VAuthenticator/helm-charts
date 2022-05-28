@@ -74,6 +74,7 @@ application:
   backChannelBaseUrl: http://vauthenticator:8080
 
   mailProvider:
+    enabled: false
     host: localhost
     port: 587
     username: ""

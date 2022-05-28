@@ -50,6 +50,7 @@ data:
     auth.oidcIss: {{ .Values.application.baseUrl }}
     logging.file.name: /var/log/onlyone-portal/logs/${spring.application.name}.log
 
+
     sign-up:
       mail:
         enabled: {{ .Values.application.signUpMail.enabled }}
@@ -60,12 +61,15 @@ data:
     spring:
       main:
         lazy-initialization: true
+    {{- if eq .Values.application.mailProvider.enabled true }}
       mail:
+        enabled: {{ .Values.application.mailProvider.enabled }}
         host: {{ .Values.application.mailProvider.host }}
         port: {{ .Values.application.mailProvider.port }}
         username: {{ .Values.application.mailProvider.username }}
         password: {{ .Values.application.mailProvider.password }}
         properties: {}
+  {{- end }}
 
       security:
         oauth2:
