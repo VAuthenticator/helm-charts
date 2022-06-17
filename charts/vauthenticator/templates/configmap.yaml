@@ -122,14 +122,6 @@ data:
         client-application.table-name: {{ .Values.application.dynamoDb.clientApplication.tableName }}
         keys.table-name: {{ .Values.application.dynamoDb.keys.tableName }}
 
-      account-sync:
-        listener:
-          sleeping: {{ .Values.application.accountSync.listener.sleeping }}
-          queueUrl: {{ .Values.application.accountSync.listener.queueUrl }}
-          maxNumberOfMessages: {{ .Values.application.accountSync.listener.maxNumberOfMessages }}
-          visibilityTimeout: {{ .Values.application.accountSync.listener.visibilityTimeout }}
-          waitTimeSeconds: {{ .Values.application.accountSync.listener.waitTimeSeconds }}
-
     {{- if eq .Values.aws.iamUser.enabled true }}
     iamUserAwsCredentialsProvider: true
     {{ end }}

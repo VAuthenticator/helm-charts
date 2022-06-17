@@ -98,14 +98,6 @@ application:
     keys:
       tableName: your_VAuthenticator_Keys_table_name
 
-  accountSync:
-    listener:
-      sleeping: 1m
-      queueUrl: your_vauthenticator-account_updates_queue_name
-      maxNumberOfMessages: 5
-      visibilityTimeout: 20
-      waitTimeSeconds: 20
-
 
 managementUi:
   enabled: false
