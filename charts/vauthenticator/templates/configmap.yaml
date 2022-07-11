@@ -218,7 +218,7 @@ data:
           host: {{ .Values.managementUi.baseUrl }}
           polling-rate: 5s
           origin: ${vauthenticator.host}
-          logout-uri: /oidc_logout.html
+          logout-uri: /logout
       client:
         registrationId: client
       host: {{ .Values.application.baseUrl }}
