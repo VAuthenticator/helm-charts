@@ -15,7 +15,7 @@ spec:
       {{- toYaml . | nindent 8 }}
       {{- end }}
       labels:
-      {{- with .Values.application.podAnnotations }}
+      {{- with .Values.application.lables }}
       {{- toYaml .Values.application.lables | nindent 8 }}
       {{ end }}
     {{- include "vauthenticator.selectorLabels" . | nindent 8 }}
