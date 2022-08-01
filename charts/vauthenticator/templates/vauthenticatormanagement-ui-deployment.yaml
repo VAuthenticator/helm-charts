@@ -16,7 +16,7 @@ spec:
       {{- toYaml . | nindent 8 }}
       {{- end }}
       labels:
-      {{- with .Values.managementUi.selectorLabels }}
+      {{- with .Values.managementUi.lables }}
       {{- toYaml .Values.managementUi.lables | nindent 8 }}
       {{ end }}
     {{- include "vauthenticator-management-ui.selectorLabels" . | nindent 8 }}
