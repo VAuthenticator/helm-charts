@@ -45,7 +45,7 @@ spec:
       metadata:
         serverAddress: {{ .Values.managementUi.keda.prometheus.serverAddress }}
         metricName: {{ .Values.managementUi.keda.prometheus.metricName }}
-        threshold: {{ .Values.managementUi.keda.prometheus.threshold }}
+        threshold: {{ .Values.managementUi.keda.prometheus.threshold | quote }}
         query: {{ .Values.managementUi.keda.prometheus.query }}
 
   {{ end }}
