@@ -24,7 +24,11 @@ logging:
 application:
   keda:
     enabled: false
-    spec: {}
+    spec:
+      minReplicaCount: 1
+      maxReplicaCount: 1
+      pollingInterval: 1
+      cooldownPeriod: 300
     prometheus:
       serverAddress:
       metricName:
@@ -113,7 +117,11 @@ managementUi:
   enabled: false
   keda:
     enabled: false
-    spec: { }
+    spec:
+      minReplicaCount: 1
+      maxReplicaCount: 1
+      pollingInterval: 1
+      cooldownPeriod: 300
     prometheus:
       serverAddress:
       metricName:

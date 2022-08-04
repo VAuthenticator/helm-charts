@@ -8,9 +8,10 @@ metadata:
   labels:
     deploymentName: {{ include "vauthenticator.name" . }}
 spec:
-{{- with .Values.application.keda.spec }}
-{{- toYaml . | nindent 4 }}
-{{- end }}
+  minReplicaCount: {{ .Values.application.keda.spec.minReplicaCount }}
+  maxReplicaCount: {{ .Values.application.keda.spec.maxReplicaCount }}
+  pollingInterval: {{ .Values.application.keda.spec.pollingInterval }}
+  cooldownPeriod: {{ .Values.application.keda.spec.cooldownPeriod }}
   scaleTargetRef:
     name: {{ include "vauthenticator.name" . }}
   triggers:
@@ -33,9 +34,10 @@ metadata:
   labels:
     deploymentName: {{ include "vauthenticator-management-ui.name" . }}
 spec:
-  {{- with .Values.managementUi.keda.spec }}
-  {{- toYaml . | nindent 4 }}
-  {{- end }}
+  minReplicaCount: {{ .Values.managementUi.keda.spec.minReplicaCount }}
+  maxReplicaCount: {{ .Values.managementUi.keda.spec.maxReplicaCount }}
+  pollingInterval: {{ .Values.managementUi.keda.spec.pollingInterval }}
+  cooldownPeriod: {{ .Values.managementUi.keda.spec.cooldownPeriod }}
   scaleTargetRef:
     name: {{ include "vauthenticator-management-ui.name" . }}
   triggers:
