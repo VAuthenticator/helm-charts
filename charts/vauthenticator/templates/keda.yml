@@ -20,7 +20,7 @@ spec:
         serverAddress: {{ .Values.application.keda.prometheus.serverAddress }}
         metricName: {{ .Values.application.keda.prometheus.metricName }}
         threshold: {{ .Values.application.keda.prometheus.threshold }}
-        query: : {{ .Values.application.keda.prometheus.query }}
+        query: {{ .Values.application.keda.prometheus.query }}
 
   {{ end }}
 
@@ -46,6 +46,6 @@ spec:
         serverAddress: {{ .Values.managementUi.keda.prometheus.serverAddress }}
         metricName: {{ .Values.managementUi.keda.prometheus.metricName }}
         threshold: {{ .Values.managementUi.keda.prometheus.threshold }}
-        query:: {{ .Values.managementUi.keda.prometheus.query }}
+        query: {{ .Values.managementUi.keda.prometheus.query }}
 
   {{ end }}
