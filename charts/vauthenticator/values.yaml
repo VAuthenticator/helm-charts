@@ -22,6 +22,16 @@ logging:
     host: elasticsearch.host:9200
 
 application:
+  keda:
+    enabled: false
+    spec: {}
+    prometheus:
+      serverAddress:
+      metricName:
+      threshold:
+      query:
+
+
   pod:
     probes:
       liveness:
@@ -101,6 +111,15 @@ application:
 
 managementUi:
   enabled: false
+  keda:
+    enabled: false
+    spec: { }
+    prometheus:
+      serverAddress:
+      metricName:
+      threshold:
+      query:
+
   pod:
     probes:
       liveness:

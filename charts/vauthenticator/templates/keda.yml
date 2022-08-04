@@ -1,0 +1,49 @@
+{{- if eq .Values.application.keda.enabled true }}
+
+apiVersion: keda.sh/v1alpha1
+kind: ScaledObject
+metadata:
+  name: {{ include "vauthenticator.name" . }}
+  namespace: {{ .Release.Namespace }}
+  labels:
+    deploymentName: {{ include "vauthenticator.name" . }}
+spec:
+    {{- with .Values.application.keda.spec }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
+  scaleTargetRef:
+    name: {{ include "vauthenticator.name" . }}
+  triggers:
+    - type: prometheus
+      metadata:
+        serverAddress: {{ .Values.application.keda.prometheus.serverAddress }}
+        metricName: {{ .Values.application.keda.prometheus.metricName }}
+        threshold: {{ .Values.application.keda.prometheus.threshold }}
+        query: : {{ .Values.application.keda.prometheus.query }}
+
+  {{ end }}
+
+{{- if eq .Values.managementUi.keda.enabled true }}
+---
+apiVersion: keda.sh/v1alpha1
+kind: ScaledObject
+metadata:
+  name: {{ include "vauthenticator-management-ui.name" . }}
+  namespace: {{ .Release.Namespace }}
+  labels:
+    deploymentName: {{ include "vauthenticator-management-ui.name" . }}
+spec:
+    {{- with .Values.:.keda.spec }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
+  scaleTargetRef:
+    name: {{ include "vauthenticator-management-ui.name" . }}
+  triggers:
+    - type: prometheus
+      metadata:
+        serverAddress: {{ .Values.managementUi.keda.prometheus.serverAddress }}
+        metricName: {{ .Values.managementUi.keda.prometheus.metricName }}
+        threshold: {{ .Values.managementUi.keda.prometheus.threshold }}
+        query:: {{ .Values.managementUi.keda.prometheus.query }}
+
+  {{ end }}
