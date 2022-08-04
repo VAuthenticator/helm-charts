@@ -1,5 +1,5 @@
 {{- if eq .Values.application.keda.enabled true }}
-
+---
 apiVersion: keda.sh/v1alpha1
 kind: ScaledObject
 metadata:
@@ -8,9 +8,9 @@ metadata:
   labels:
     deploymentName: {{ include "vauthenticator.name" . }}
 spec:
-    {{- with .Values.application.keda.spec }}
-    {{- toYaml . | nindent 4 }}
-    {{- end }}
+  {{- with .Values.application.keda.spec }}
+  {{- toYaml . | nindent 4 }}
+  {{- end }}
   scaleTargetRef:
     name: {{ include "vauthenticator.name" . }}
   triggers:
@@ -33,9 +33,9 @@ metadata:
   labels:
     deploymentName: {{ include "vauthenticator-management-ui.name" . }}
 spec:
-    {{- with .Values.managementUi.keda.spec }}
-    {{- toYaml . | nindent 4 }}
-    {{- end }}
+  {{- with .Values.managementUi.keda.spec }}
+  {{- toYaml . | nindent 4 }}
+  {{- end }}
   scaleTargetRef:
     name: {{ include "vauthenticator-management-ui.name" . }}
   triggers:
