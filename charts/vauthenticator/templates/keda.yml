@@ -8,7 +8,9 @@ metadata:
   labels:
     deploymentName: {{ include "vauthenticator.name" . }}
 spec:
-  {{- toYaml . | nindent 4 }}
+{{- with .Values.application.keda.spec }}
+{{- toYaml . | nindent 4 }}
+{{- end }}
   scaleTargetRef:
     name: {{ include "vauthenticator.name" . }}
   triggers:
