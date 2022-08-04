@@ -33,7 +33,7 @@ metadata:
   labels:
     deploymentName: {{ include "vauthenticator-management-ui.name" . }}
 spec:
-    {{- with .Values.:.keda.spec }}
+    {{- with .Values.managementUi.keda.spec }}
     {{- toYaml . | nindent 4 }}
     {{- end }}
   scaleTargetRef:
