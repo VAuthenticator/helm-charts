@@ -54,12 +54,12 @@ data:
       mail-sender-enabled: {{ .Values.application.mailProvider.enabled }}
 
     {{- if eq .Values.application.mailProvider.enabled true }}
-    sign-up:
+    no-reply:
       mail:
-        enabled: {{ .Values.application.signUpMail.enabled }}
-        from: {{ .Values.application.signUpMail.from }}
-        subject: {{ .Values.application.signUpMail.subject }}
-        bodyTemplate: {{ .Values.application.signUpMail.bodyTemplate }}
+        from: {{ .Values.application.mail.from }}
+        welcomeMailSubject: {{ .Values.application.mail.welcomeMailSubject }}
+        verificationMailSubject: {{ .Values.application.mail.verificationMailSubject }}
+        resetPasswordMailSubject: {{ .Values.application.mail.resetPasswordMailSubject }}
   {{- end }}
 
     spring:
