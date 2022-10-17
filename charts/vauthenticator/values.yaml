@@ -94,11 +94,11 @@ application:
     username: ""
     password: ""
 
-  signUpMail:
-    enabled: false
+  mail:
     from: ""
-    subject: ""
-    bodyTemplate: ""
+    welcomeMailSubject: ""
+    verificationMailSubject: ""
+    resetPasswordMailSubject: ""
 
   dynamoDb:
     account:
@@ -111,7 +111,8 @@ application:
       tableName: your_VAuthenticator_ClientApplication_table_name
     keys:
       tableName: your_VAuthenticator_Keys_table_name
-
+    ticket:
+      tableName: your_VAuthenticator_tICKET_table_name
 
 managementUi:
   enabled: false
