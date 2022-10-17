@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
     inputs:
       version:
-        description: 'make a tag for teh helm chart'
+        description: 'make a tag for the helm chart'
         required: true
 jobs:
   release:
