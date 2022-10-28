@@ -45,6 +45,8 @@ metadata:
   namespace: {{ .Release.Namespace }}
 data:
   application.yml: |
+    key:
+      master-key: {{ .Values.application.masterKey }}}
     endSessionWithoutDiscovery: true
     oidcEndSessionUrl: {{ .Values.application.baseUrl }}/oidc/logout
     auth.oidcIss: {{ .Values.application.baseUrl }}

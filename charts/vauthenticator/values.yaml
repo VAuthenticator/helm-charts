@@ -77,6 +77,8 @@ application:
 
   podAnnotations: { }
 
+  masterKey: ACCOUNT_KMS_KEY
+
   redis:
     database: 0
     host: vauthenticator-redis-master.auth.svc.cluster.local
