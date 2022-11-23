@@ -129,7 +129,7 @@ data:
         client-application.table-name: {{ .Values.application.dynamoDb.clientApplication.tableName }}
         keys.table-name: {{ .Values.application.dynamoDb.keys.tableName }}
         ticket.table-name:  {{ .Values.application.dynamoDb.ticket.tableName }}
-
+      host: {{ .Values.application.baseUrl }}
     {{- if eq .Values.aws.iamUser.enabled true }}
     iamUserAwsCredentialsProvider: true
     {{ end }}
