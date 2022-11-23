@@ -118,8 +118,8 @@ application:
     ticket:
       tableName: your_VAuthenticator_tICKET_table_name
 
-  dcoumentRepository:
-    buckertName: test
+  documentRepository:
+    bucketName: test
 
 managementUi:
   enabled: false
