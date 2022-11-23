@@ -55,6 +55,9 @@ data:
     features:
       mail-sender-enabled: {{ .Values.application.mailProvider.enabled }}
 
+    document:
+      bucket-name: {{ .Values.application.dcoumentRepository.buckertName }}
+
     {{- if eq .Values.application.mailProvider.enabled true }}
     no-reply:
       mail:

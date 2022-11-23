@@ -89,6 +89,7 @@ application:
   baseUrl: http://application-example-host.com
   backChannelBaseUrl: http://vauthenticator:8080
 
+
   mailProvider:
     enabled: false
     host: localhost
@@ -116,6 +117,9 @@ application:
       tableName: your_VAuthenticator_Keys_table_name
     ticket:
       tableName: your_VAuthenticator_tICKET_table_name
+
+  dcoumentRepository:
+    buckertName: test
 
 managementUi:
   enabled: false
