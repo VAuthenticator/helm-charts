@@ -46,7 +46,7 @@ metadata:
 data:
   application.yml: |
     key:
-      master-key: {{ .Values.application.masterKey }}}
+      master-key: {{ .Values.application.masterKey }}
     endSessionWithoutDiscovery: true
     oidcEndSessionUrl: {{ .Values.application.baseUrl }}/oidc/logout
     auth.oidcIss: {{ .Values.application.baseUrl }}
