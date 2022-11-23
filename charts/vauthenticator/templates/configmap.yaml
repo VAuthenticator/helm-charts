@@ -73,7 +73,9 @@ data:
         port: {{ .Values.application.mailProvider.port }}
         username: {{ .Values.application.mailProvider.username }}
         password: {{ .Values.application.mailProvider.password }}
-        properties: {}
+        properties:
+          {{ .Values.application.mailProvider.properties toYaml }}
+
   {{- end }}
 
       security:

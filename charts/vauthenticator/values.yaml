@@ -95,6 +95,7 @@ application:
     port: 587
     username: ""
     password: ""
+    properties: {}
 
   mail:
     from: ""

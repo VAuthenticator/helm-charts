@@ -84,7 +84,7 @@ spec:
             initialDelaySeconds: {{ .Values.application.pod.probes.rediness.initialDelaySeconds }}
             periodSeconds: {{ .Values.application.pod.probes.rediness.periodSeconds }}
           resources:
-          {{- toYaml .Values.application.resources | nindent 12 }}
+          {{- toYaml .Values.application.resources | nindent 10 }}
           env:
             {{- if eq .Values.aws.iamUser.enabled true }}
             - name: AWS_ACCESS_KEY_ID
