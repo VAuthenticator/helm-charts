@@ -86,10 +86,10 @@ data:
           resourceserver:
             jwt:
               jwk-set-uri: http://localhost:${server.port}/oauth2/jwks
-
-      redis:
-        database: {{ .Values.application.redis.database }}
-        host: {{ .Values.application.redis.host }}
+      data:
+        redis:
+          database: {{ .Values.application.redis.database }}
+          host: {{ .Values.application.redis.host }}
 
       sleuth:
         redis:
