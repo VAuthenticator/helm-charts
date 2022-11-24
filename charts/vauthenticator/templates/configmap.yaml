@@ -86,10 +86,10 @@ data:
           resourceserver:
             jwt:
               jwk-set-uri: http://localhost:${server.port}/oauth2/jwks
-
-      redis:
-        database: {{ .Values.application.redis.database }}
-        host: {{ .Values.application.redis.host }}
+      data:
+        redis:
+          database: {{ .Values.application.redis.database }}
+          host: {{ .Values.application.redis.host }}
 
       sleuth:
         redis:
@@ -184,7 +184,6 @@ data:
                 user-info-authentication-method: header
                 jwk-set-uri: {{ .Values.application.backChannelBaseUrl }}/oauth2/jwks
                 user-name-attribute: email
-
       redis:
         database: {{ .Values.managementUi.redis.database }}
         host: {{ .Values.application.redis.host }}
