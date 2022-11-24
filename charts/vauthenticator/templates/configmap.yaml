@@ -184,9 +184,9 @@ data:
                 user-info-authentication-method: header
                 jwk-set-uri: {{ .Values.application.backChannelBaseUrl }}/oauth2/jwks
                 user-name-attribute: email
-        redis:
-          database: {{ .Values.managementUi.redis.database }}
-          host: {{ .Values.application.redis.host }}
+      redis:
+        database: {{ .Values.managementUi.redis.database }}
+        host: {{ .Values.application.redis.host }}
 
       sleuth:
         redis:
