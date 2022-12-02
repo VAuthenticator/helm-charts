@@ -103,6 +103,7 @@ application:
     welcomeMailSubject: ""
     verificationMailSubject: ""
     resetPasswordMailSubject: ""
+    mfaMailSubject: ""
 
   dynamoDb:
     account:
@@ -120,6 +121,11 @@ application:
 
   documentRepository:
     bucketName: test
+
+  mfa:
+    otp:
+      otpLength: 6
+      otpTimeToLiveInSeconds: 1
 
 managementUi:
   enabled: false
