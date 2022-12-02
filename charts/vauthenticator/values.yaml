@@ -125,7 +125,7 @@ application:
   mfa:
     otp:
       otpLength: 6
-      otpTimeToLiveInSeconds: 1
+      otpTimeToLiveInSeconds: 30
 
 managementUi:
   enabled: false
