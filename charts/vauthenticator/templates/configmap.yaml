@@ -65,7 +65,13 @@ data:
         welcomeMailSubject: {{ .Values.application.mail.welcomeMailSubject }}
         verificationMailSubject: {{ .Values.application.mail.verificationMailSubject }}
         resetPasswordMailSubject: {{ .Values.application.mail.resetPasswordMailSubject }}
+        mfaMailSubject: {{ .Values.application.mail.mfaMailSubject }}
   {{- end }}
+
+    mfa:
+      otp:
+        otpLength: {{ .Values.application.mfa.otp.otpLength }}
+        otpTimeToLiveInSeconds: {{ .Values.application.mfa.otp.otpTimeToLiveInSeconds }}
 
     spring:
       main:
