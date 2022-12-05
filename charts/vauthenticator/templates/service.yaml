@@ -32,3 +32,19 @@ spec:
     {{- include "vauthenticator-management-ui.selectorLabels" . | nindent 4 }}
 
   {{ end }}
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "vauthenticator-asset.name" . }}
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "vauthenticator-asset.labels" . | nindent 4 }}
+spec:
+  type: {{ .Values.applicationAsset.service.type }}
+  ports:
+    - port: 80
+      name: http
+  selector:
+    {{- include "vauthenticator-asset.selectorLabels" . | nindent 4 }}

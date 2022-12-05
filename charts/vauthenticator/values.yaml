@@ -96,7 +96,7 @@ application:
     port: 587
     username: ""
     password: ""
-    properties: {}
+    properties: { }
 
   mail:
     from: ""
@@ -126,6 +126,9 @@ application:
     otp:
       otpLength: 6
       otpTimeToLiveInSeconds: 30
+
+  assetServer:
+    baseUrl: http://localhost:3000/asset
 
 managementUi:
   enabled: false
@@ -198,10 +201,55 @@ managementUi:
 
   baseUrl: http://application-example-host.com
 
+applicationAsset:
+  pod:
+    probes:
+      liveness:
+        initialDelaySeconds: 10
+        periodSeconds: 30
+      rediness:
+        initialDelaySeconds: 10
+        periodSeconds: 30
 
-imagePullSecrets: []
+  service:
+    type: ClusterIP
+
+  ingress:
+    host: "*"
+    annotations: { }
+    tls: { }
+    enabled: true
+    class: nginx
+
+
+  resources:
+    requests:
+      cpu: "256m"
+      memory: "256Mi"
+    limits:
+      cpu: "512m"
+      memory: "512Mi"
+
+  replicaCount: 1
+
+  image:
+    repository: mrflick72/vauthenticator-asset-k8s
+    pullPolicy: Always
+    tag: "latest"
+
+  lables: { }
+
+  selectorLabels:
+    app: vauthenticator-asset
+
+  podAnnotations: { }
+
+  server:
+    port: 80
+
+
+imagePullSecrets: [ ]
 nameOverride: ""
-fullnameOverride: ""
 
 redis:
   auth:
