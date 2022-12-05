@@ -14,7 +14,7 @@ Expand the name of the chart.
 {{- end }}
 
 
-{{- define "vauthenticator-asset.name" -}}
+{{- define "vauthenticator-assets.name" -}}
 {{- default .Chart.Name .Values.nameOverride | trunc 63 | trimSuffix "-" }}-asset
 {{- end }}
 
@@ -40,9 +40,9 @@ app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
 app.kubernetes.io/managed-by: {{ .Release.Service }}
 {{- end }}
 
-{{- define "vauthenticator-asset.labels" -}}
+{{- define "vauthenticator-assets.labels" -}}
 helm.sh/chart: {{ include "vauthenticator.chart" . }}
-{{ include "vauthenticator-asset.selectorLabels" . }}
+{{ include "vauthenticator-assets.selectorLabels" . }}
 {{- if .Chart.AppVersion }}
 app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
 {{- end }}
@@ -65,7 +65,7 @@ app.kubernetes.io/name: {{ include "vauthenticator.name" . }}-management-ui
 app.kubernetes.io/instance: {{ .Release.Name }}
 {{- end }}
 
-{{- define "vauthenticator-asset.selectorLabels" -}}
+{{- define "vauthenticator-assets.selectorLabels" -}}
 {{- toYaml .Values.applicationAsset.selectorLabels }}
 app.kubernetes.io/name: {{ include "vauthenticator.name" . }}-management-ui
 app.kubernetes.io/instance: {{ .Release.Name }}

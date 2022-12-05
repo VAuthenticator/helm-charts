@@ -1,13 +1,13 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "vauthenticator-asset.name" . }}
+  name: {{ include "vauthenticator-assets.name" . }}
   namespace: {{ .Release.Namespace }}
 spec:
   replicas: {{ .Values.application.replicaCount }}
   selector:
     matchLabels:
-  {{- include "vauthenticator-asset.selectorLabels" . | nindent 6 }}
+  {{- include "vauthenticator-assets.selectorLabels" . | nindent 6 }}
   template:
     metadata:
       {{- with .Values.applicationAsset.podAnnotations }}
@@ -18,14 +18,14 @@ spec:
       {{- with .Values.applicationAsset.lables }}
       {{- toYaml .Values.applicationAsset.lables | nindent 8 }}
       {{ end }}
-    {{- include "vauthenticator-asset.selectorLabels" . | nindent 8 }}
+    {{- include "vauthenticator-assets.selectorLabels" . | nindent 8 }}
     spec:
       {{- with .Values.imagePullSecrets }}
       imagePullSecrets:
       {{- toYaml . | nindent 8 }}
       {{- end }}
       {{- if eq .Values.aws.eks.serviceAccount.enabled true }}
-      serviceAccountName: {{ include "vauthenticator-asset.name" . }}
+      serviceAccountName: {{ include "vauthenticator-assets.name" . }}
         {{ end }}
       containers:
         - name: {{ .Chart.Name }}

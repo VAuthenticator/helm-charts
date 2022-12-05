@@ -32,7 +32,7 @@ apiVersion: networking.
   k8s.io/v1
 kind: Ingress
 metadata:
-  name: {{ include "vauthenticator-asset.name" . }}
+  name: {{ include "vauthenticator-assets.name" . }}
   namespace: {{ .Release.Namespace }}
   annotations:
     kubernetes.io/ingress.class: {{ .Values.application.ingress.class }}
@@ -49,7 +49,7 @@ spec:
             pathType: Prefix
             backend:
               service:
-                name: {{ include "vauthenticator-asset.name" . }}
+                name: {{ include "vauthenticator-assets.name" . }}
                 port:
                   number: {{ .Values.application.server.port }}
       host: {{  .Values.application.ingress.host }}

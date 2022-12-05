@@ -233,14 +233,14 @@ applicationAsset:
   replicaCount: 1
 
   image:
-    repository: mrflick72/vauthenticator-asset-k8s
+    repository: mrflick72/vauthenticator-assets-k8s
     pullPolicy: Always
     tag: "latest"
 
   lables: { }
 
   selectorLabels:
-    app: vauthenticator-asset
+    app: vauthenticator-assets
 
   podAnnotations: { }
 
