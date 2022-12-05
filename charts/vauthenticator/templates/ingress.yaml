@@ -36,7 +36,7 @@ metadata:
   namespace: {{ .Release.Namespace }}
   annotations:
     kubernetes.io/ingress.class: {{ .Values.application.ingress.class }}
-    {{- with .Values.applicationAsset.ingress.annotations }}
+    {{- with .Values.applicationAssets.ingress.annotations }}
     {{- toYaml . | nindent 4 }}
     {{- end }}
 
@@ -53,7 +53,7 @@ spec:
                 port:
                   number: {{ .Values.application.server.port }}
       host: {{  .Values.application.ingress.host }}
-    {{- with .Values.applicationAsset.ingress.tls }}
+    {{- with .Values.applicationAssets.ingress.tls }}
   tls:
   {{- toYaml . | nindent 4}}
     {{- end }}

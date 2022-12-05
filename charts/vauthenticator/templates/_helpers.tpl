@@ -66,7 +66,7 @@ app.kubernetes.io/instance: {{ .Release.Name }}
 {{- end }}
 
 {{- define "vauthenticator-assets.selectorLabels" -}}
-{{- toYaml .Values.applicationAsset.selectorLabels }}
+{{- toYaml .Values.applicationAssets.selectorLabels }}
 app.kubernetes.io/name: {{ include "vauthenticator.name" . }}-management-ui
 app.kubernetes.io/instance: {{ .Release.Name }}
 {{- end }}

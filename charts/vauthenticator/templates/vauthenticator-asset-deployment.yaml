@@ -10,13 +10,13 @@ spec:
   {{- include "vauthenticator-assets.selectorLabels" . | nindent 6 }}
   template:
     metadata:
-      {{- with .Values.applicationAsset.podAnnotations }}
+      {{- with .Values.applicationAssets.podAnnotations }}
       annotations:
       {{- toYaml . | nindent 8 }}
       {{- end }}
       labels:
-      {{- with .Values.applicationAsset.lables }}
-      {{- toYaml .Values.applicationAsset.lables | nindent 8 }}
+      {{- with .Values.applicationAssets.lables }}
+      {{- toYaml .Values.applicationAssets.lables | nindent 8 }}
       {{ end }}
     {{- include "vauthenticator-assets.selectorLabels" . | nindent 8 }}
     spec:
@@ -29,8 +29,8 @@ spec:
         {{ end }}
       containers:
         - name: {{ .Chart.Name }}
-          image: "{{ .Values.applicationAsset.image.repository }}:{{ .Values.applicationAsset.image.tag | default .Chart.AppVersion }}"
-          imagePullPolicy: {{ .Values.applicationAsset.image.pullPolicy }}
+          image: "{{ .Values.applicationAssets.image.repository }}:{{ .Values.applicationAssets.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.applicationAssets.image.pullPolicy }}
           ports:
             - containerPort: 80
           livenessProbe:
@@ -47,4 +47,4 @@ spec:
             initialDelaySeconds: {{ .Values.application.pod.probes.rediness.initialDelaySeconds }}
             periodSeconds: {{ .Values.application.pod.probes.rediness.periodSeconds }}
           resources:
-          {{- toYaml .Values.applicationAsset.resources | nindent 12 }}
+          {{- toYaml .Values.applicationAssets.resources | nindent 12 }}

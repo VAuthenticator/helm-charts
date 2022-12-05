@@ -201,7 +201,7 @@ managementUi:
 
   baseUrl: http://application-example-host.com
 
-applicationAsset:
+applicationAssets:
   pod:
     probes:
       liveness:

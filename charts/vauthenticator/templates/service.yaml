@@ -42,7 +42,7 @@ metadata:
   labels:
     {{- include "vauthenticator-assets.labels" . | nindent 4 }}
 spec:
-  type: {{ .Values.applicationAsset.service.type }}
+  type: {{ .Values.applicationAssets.service.type }}
   ports:
     - port: 80
       name: http
