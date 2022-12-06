@@ -1,0 +1,50 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "vauthenticator-assets.name" . }}
+  namespace: {{ .Release.Namespace }}
+spec:
+  replicas: {{ .Values.applicationAssets.replicaCount }}
+  selector:
+    matchLabels:
+  {{- include "vauthenticator-assets.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      {{- with .Values.applicationAssets.podAnnotations }}
+      annotations:
+      {{- toYaml . | nindent 8 }}
+      {{- end }}
+      labels:
+      {{- with .Values.applicationAssets.lables }}
+      {{- toYaml .Values.applicationAssets.lables | nindent 8 }}
+      {{ end }}
+    {{- include "vauthenticator-assets.selectorLabels" . | nindent 8 }}
+    spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+      {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- if eq .Values.aws.eks.serviceAccount.enabled true }}
+      serviceAccountName: {{ include "vauthenticator-assets.name" . }}
+        {{ end }}
+      containers:
+        - name: {{ .Chart.Name }}
+          image: "{{ .Values.applicationAssets.image.repository }}:{{ .Values.applicationAssets.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.applicationAssets.image.pullPolicy }}
+          ports:
+            - containerPort: 80
+          livenessProbe:
+            httpGet:
+              path: /asset/healthz_bundle.js
+              port: 80
+            initialDelaySeconds: {{ .Values.application.pod.probes.liveness.initialDelaySeconds }}
+            periodSeconds: {{ .Values.application.pod.probes.liveness.periodSeconds }}
+
+          readinessProbe:
+            httpGet:
+              path: /asset/healthz_bundle.js
+              port: 80
+            initialDelaySeconds: {{ .Values.application.pod.probes.rediness.initialDelaySeconds }}
+            periodSeconds: {{ .Values.application.pod.probes.rediness.periodSeconds }}
+          resources:
+          {{- toYaml .Values.applicationAssets.resources | nindent 12 }}

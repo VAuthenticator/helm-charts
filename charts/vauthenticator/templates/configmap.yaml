@@ -52,6 +52,9 @@ data:
     auth.oidcIss: {{ .Values.application.baseUrl }}
     logging.file.name: /var/log/onlyone-portal/logs/${spring.application.name}.log
 
+    assetServer:
+      baseUrl: {{ .Values.application.assetServer.baseUrl }}
+
     features:
       mail-sender-enabled: {{ .Values.application.mailProvider.enabled }}
 
