@@ -15,7 +15,7 @@ Expand the name of the chart.
 
 
 {{- define "vauthenticator-assets.name" -}}
-{{- default .Chart.Name .Values.nameOverride | trunc 63 | trimSuffix "-" }}-asset
+{{- default .Chart.Name .Values.nameOverride | trunc 63 | trimSuffix "-" }}-assets
 {{- end }}
 
 
@@ -67,6 +67,6 @@ app.kubernetes.io/instance: {{ .Release.Name }}
 
 {{- define "vauthenticator-assets.selectorLabels" -}}
 {{- toYaml .Values.applicationAssets.selectorLabels }}
-app.kubernetes.io/name: {{ include "vauthenticator.name" . }}-asset
+app.kubernetes.io/name: {{ include "vauthenticator.name" . }}-assets
 app.kubernetes.io/instance: {{ .Release.Name }}
 {{- end }}
