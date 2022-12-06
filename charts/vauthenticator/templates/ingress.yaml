@@ -52,7 +52,7 @@ spec:
                 name: {{ include "vauthenticator-assets.name" . }}
                 port:
                   number: {{ .Values.applicationAssets.server.port }}
-      host: {{  .Values.application.ingress.host }}
+      host: {{  .Values.applicationAssets.ingress.host }}
     {{- with .Values.applicationAssets.ingress.tls }}
   tls:
   {{- toYaml . | nindent 4}}
