@@ -35,15 +35,15 @@ spec:
             - containerPort: 80
           livenessProbe:
             httpGet:
-              path: /actuator/health
-              port: 8081
+              path: /asset/healthz_bundle.js
+              port: 80
             initialDelaySeconds: {{ .Values.application.pod.probes.liveness.initialDelaySeconds }}
             periodSeconds: {{ .Values.application.pod.probes.liveness.periodSeconds }}
 
           readinessProbe:
             httpGet:
-              path: /actuator/health
-              port: 8081
+              path: /asset/healthz_bundle.js
+              port: 80
             initialDelaySeconds: {{ .Values.application.pod.probes.rediness.initialDelaySeconds }}
             periodSeconds: {{ .Values.application.pod.probes.rediness.periodSeconds }}
           resources:
