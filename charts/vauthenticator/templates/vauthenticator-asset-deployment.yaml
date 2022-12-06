@@ -4,7 +4,7 @@ metadata:
   name: {{ include "vauthenticator-assets.name" . }}
   namespace: {{ .Release.Namespace }}
 spec:
-  replicas: {{ .Values.application.replicaCount }}
+  replicas: {{ .Values.applicationAssets.replicaCount }}
   selector:
     matchLabels:
   {{- include "vauthenticator-assets.selectorLabels" . | nindent 6 }}
