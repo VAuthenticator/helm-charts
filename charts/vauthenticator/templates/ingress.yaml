@@ -35,7 +35,7 @@ metadata:
   name: {{ include "vauthenticator-assets.name" . }}
   namespace: {{ .Release.Namespace }}
   annotations:
-    kubernetes.io/ingress.class: {{ .Values.application.ingress.class }}
+    kubernetes.io/ingress.class: {{ .Values.applicationAssets.ingress.class }}
     {{- with .Values.applicationAssets.ingress.annotations }}
     {{- toYaml . | nindent 4 }}
     {{- end }}
@@ -51,7 +51,7 @@ spec:
               service:
                 name: {{ include "vauthenticator-assets.name" . }}
                 port:
-                  number: {{ .Values.application.server.port }}
+                  number: {{ .Values.applicationAssets.server.port }}
       host: {{  .Values.application.ingress.host }}
     {{- with .Values.applicationAssets.ingress.tls }}
   tls:

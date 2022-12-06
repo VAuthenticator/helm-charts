@@ -54,6 +54,7 @@ data:
 
     assetServer:
       baseUrl: {{ .Values.application.assetServer.baseUrl }}
+
     features:
       mail-sender-enabled: {{ .Values.application.mailProvider.enabled }}
 
