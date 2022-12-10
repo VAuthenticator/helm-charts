@@ -136,6 +136,7 @@ data:
         account.role.table-name: {{ .Values.application.dynamoDb.account.role.tableName }}
         role.table-name: {{ .Values.application.dynamoDb.role.tableName }}
         client-application.table-name: {{ .Values.application.dynamoDb.clientApplication.tableName }}
+        mfa-account-methods.table-name: {{ .Values.application.dynamoDb.mfaAccountMethods.tableName  }}
         keys.table-name: {{ .Values.application.dynamoDb.keys.tableName }}
         keys.mfa.table-name: {{ .Values.application.dynamoDb.keys.mfa.tableName }}
         keys.signature.table-name: {{ .Values.application.dynamoDb.keys.signature.tableName }}

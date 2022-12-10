@@ -114,6 +114,8 @@ application:
       tableName: your_VAuthenticator_Role_table_name
     clientApplication:
       tableName: your_VAuthenticator_ClientApplication_table_name
+    mfaAccountMethods:
+      tableName: your_VAuthenticator_mfaAccountMethods_table_name
     keys:
       mfa:
         tableName: your_VAuthenticator_Mfa-Keys_table_name
