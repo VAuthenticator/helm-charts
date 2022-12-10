@@ -115,6 +115,10 @@ application:
     clientApplication:
       tableName: your_VAuthenticator_ClientApplication_table_name
     keys:
+      mfa:
+        tableName: your_VAuthenticator_Mfa-Keys_table_name
+      signature:
+        tableName: your_VAuthenticator_Signature_Keys_table_name
       tableName: your_VAuthenticator_Keys_table_name
     ticket:
       tableName: your_VAuthenticator_tICKET_table_name
