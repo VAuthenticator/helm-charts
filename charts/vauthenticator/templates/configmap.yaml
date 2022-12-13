@@ -100,10 +100,6 @@ data:
           database: {{ .Values.application.redis.database }}
           host: {{ .Values.application.redis.host }}
 
-      sleuth:
-        redis:
-          enabled: false
-
     server:
       port: {{ .Values.application.server.port }}
       forward-headers-strategy: framework
@@ -196,13 +192,10 @@ data:
                 user-info-authentication-method: header
                 jwk-set-uri: {{ .Values.application.backChannelBaseUrl }}/oauth2/jwks
                 user-name-attribute: email
-      redis:
-        database: {{ .Values.managementUi.redis.database }}
-        host: {{ .Values.application.redis.host }}
-
-      sleuth:
+      data:
         redis:
-          enabled: false
+          database: {{ .Values.managementUi.redis.database }}
+          host: {{ .Values.application.redis.host }}
 
     server:
       port: {{ .Values.managementUi.server.port }}
