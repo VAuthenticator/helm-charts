@@ -182,14 +182,12 @@ data:
                   - profile
                   - email
                 redirect-uri: {{ .Values.managementUi.baseUrl }}/login/oauth2/code/client
-                client-authentication-method: basic
                 authorization-grant-type: authorization_code
             provider:
               vauthenticator:
                 authorization-uri: {{ .Values.application.baseUrl }}/oauth2/authorize
                 token-uri: {{ .Values.application.backChannelBaseUrl }}/oauth2/token
                 user-info-uri: {{ .Values.application.backChannelBaseUrl }}/userinfo
-                user-info-authentication-method: header
                 jwk-set-uri: {{ .Values.application.backChannelBaseUrl }}/oauth2/jwks
                 user-name-attribute: email
       data:
