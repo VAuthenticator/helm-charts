@@ -19,7 +19,7 @@ Expand the name of the chart.
 {{- end }}
 
 {{- define "vauthenticator-management-ui-assets.name" -}}
-{{- default .Chart.Name .Values.nameOverride | trunc 63 | trimSuffix "-" }}-assets
+{{- default .Chart.Name .Values.nameOverride | trunc 63 | trimSuffix "-" }}-management-ui-assets
 {{- end }}
 
 
