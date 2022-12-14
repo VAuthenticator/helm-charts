@@ -1,0 +1,50 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "vauthenticator-management-ui-assets.name" . }}
+  namespace: {{ .Release.Namespace }}
+spec:
+  replicas: {{ .Values.managementUiAssets.replicaCount }}
+  selector:
+    matchLabels:
+  {{- include "vauthenticator-management-ui-assets.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      {{- with .Values.managementUiAssets.podAnnotations }}
+      annotations:
+      {{- toYaml . | nindent 8 }}
+      {{- end }}
+      labels:
+      {{- with .Values.managementUiAssets.lables }}
+      {{- toYaml .Values.managementUiAssets.lables | nindent 8 }}
+      {{ end }}
+    {{- include "vauthenticator-management-ui-assets.selectorLabels" . | nindent 8 }}
+    spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+      {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- if eq .Values.aws.eks.serviceAccount.enabled true }}
+      serviceAccountName: {{ include "vauthenticator-management-ui-assets.name" . }}
+        {{ end }}
+      containers:
+        - name: {{ .Chart.Name }}
+          image: "{{ .Values.managementUiAssets.image.repository }}:{{ .Values.managementUiAssets.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.managementUiAssets.image.pullPolicy }}
+          ports:
+            - containerPort: 80
+          livenessProbe:
+            httpGet:
+              path: /asset/healthz_bundle.js
+              port: 80
+            initialDelaySeconds: {{ .Values.managementUiAssets.pod.probes.liveness.initialDelaySeconds }}
+            periodSeconds: {{ .Values.managementUiAssets.pod.probes.liveness.periodSeconds }}
+
+          readinessProbe:
+            httpGet:
+              path: /asset/healthz_bundle.js
+              port: 80
+            initialDelaySeconds: {{ .Values.managementUiAssets.pod.probes.rediness.initialDelaySeconds }}
+            periodSeconds: {{ .Values.managementUiAssets.pod.probes.rediness.periodSeconds }}
+          resources:
+          {{- toYaml .Values.managementUiAssets.resources | nindent 12 }}

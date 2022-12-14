@@ -234,5 +234,7 @@ data:
       host: {{ .Values.application.baseUrl }}
       backChannelHost: {{ .Values.application.backChannelBaseUrl }}
 
+    assetServer:
+      baseUrl: {{ .Values.managementUi.assetServer.baseUrl }}
 
     {{ end }}
