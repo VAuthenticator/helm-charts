@@ -37,14 +37,14 @@ spec:
             httpGet:
               path: /asset/healthz_bundle.js
               port: 80
-            initialDelaySeconds: {{ .Values.application.pod.probes.liveness.initialDelaySeconds }}
-            periodSeconds: {{ .Values.application.pod.probes.liveness.periodSeconds }}
+            initialDelaySeconds: {{ .Values.applicationAssets.pod.probes.liveness.initialDelaySeconds }}
+            periodSeconds: {{ .Values.applicationAssets.pod.probes.liveness.periodSeconds }}
 
           readinessProbe:
             httpGet:
               path: /asset/healthz_bundle.js
               port: 80
-            initialDelaySeconds: {{ .Values.application.pod.probes.rediness.initialDelaySeconds }}
+            initialDelaySeconds: {{ .Values.applicationAssets.pod.probes.rediness.initialDelaySeconds }}
             periodSeconds: {{ .Values.application.pod.probes.rediness.periodSeconds }}
           resources:
           {{- toYaml .Values.applicationAssets.resources | nindent 12 }}
