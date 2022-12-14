@@ -207,6 +207,9 @@ managementUi:
 
   baseUrl: http://application-example-host.com
 
+  assetServer:
+    baseUrl: http://localhost:3000/asset
+
 applicationAssets:
   pod:
     probes:
