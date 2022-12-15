@@ -26,13 +26,13 @@ jobs:
 #          git push --tags
 
       - name: Install Helm
-        uses: azure/setup-helm@v1
+        uses: azure/setup-helm@v3
         with:
-          version: v3.4.0
+          version: v3.10.0
 
       - name: Run chart-releaser
-        uses: helm/chart-releaser-action@v1.2.1
+        uses: helm/chart-releaser-action@v1.4.1
         with:
-          charts_repo_url: https://github.com/mrFlick72/vauthenticator
+          charts_repo_url: https://github.com/vauthenticator/vauthenticator-helm-charts
         env:
           CR_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
