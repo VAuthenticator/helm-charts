@@ -37,8 +37,8 @@ jobs:
 
       - name: Run chart-releaser
         uses: helm/chart-releaser-action@v1.4.1
-#        with:
-#          charts_repo_url: https://github.com/vauthenticator/vauthenticator-helm-charts
+        with:
+          charts_repo_url: https://github.com/vauthenticator/vauthenticator-helm-charts
         env:
           CR_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
 
