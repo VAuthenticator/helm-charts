@@ -22,6 +22,11 @@ jobs:
           git config user.name "$GITHUB_ACTOR"
           git config user.email "$GITHUB_ACTOR@users.noreply.github.com"
 
+      - name: Create tag
+        run: |
+          git tag -a ${{github.event.inputs.version}} -m "tag a new vauthenticator version"
+          git push origin ${{github.event.inputs.version}}
+
       - name: Install Helm
         uses: azure/setup-helm@v3
         with:
