@@ -2,6 +2,12 @@ in-namespace:
   redis:
     enabled: true
 
+redis:
+  auth:
+    enabled: false
+  replica:
+    replicaCount: 1
+
 aws:
   region: xxxxxxxxx
   iamUser:
@@ -14,12 +20,7 @@ aws:
       iamRole:
         arn: arn:aws:iam::ACCOUNT_ID:role/IAM_ROLE_NAME
 
-logging:
-  enabled: false
-  kibana:
-    host: kibana.host:5601
-  elasticSearch:
-    host: elasticsearch.host:9200
+imagePullSecrets: [ ]
 
 application:
   keda:
@@ -136,6 +137,53 @@ application:
   assetServer:
     baseUrl: http://localhost:3000/asset
 
+
+applicationAssets:
+  pod:
+    probes:
+      liveness:
+        initialDelaySeconds: 10
+        periodSeconds: 30
+      rediness:
+        initialDelaySeconds: 10
+        periodSeconds: 30
+
+  service:
+    type: ClusterIP
+
+  ingress:
+    host: "*"
+    annotations: { }
+    tls: { }
+    enabled: true
+    class: nginx
+
+
+  resources:
+    requests:
+      cpu: "256m"
+      memory: "256Mi"
+    limits:
+      cpu: "512m"
+      memory: "512Mi"
+
+  replicaCount: 1
+
+  image:
+    repository: mrflick72/vauthenticator-assets-k8s
+    pullPolicy: Always
+    tag: "latest"
+
+  lables: { }
+
+  selectorLabels:
+    app: vauthenticator-assets
+
+  podAnnotations: { }
+
+  server:
+    port: 80
+
 managementUi:
   enabled: false
   keda:
@@ -210,53 +258,6 @@ managementUi:
   assetServer:
     baseUrl: http://localhost:3000/asset
 
-applicationAssets:
-  pod:
-    probes:
-      liveness:
-        initialDelaySeconds: 10
-        periodSeconds: 30
-      rediness:
-        initialDelaySeconds: 10
-        periodSeconds: 30
-
-  service:
-    type: ClusterIP
-
-  ingress:
-    host: "*"
-    annotations: { }
-    tls: { }
-    enabled: true
-    class: nginx
-
-
-  resources:
-    requests:
-      cpu: "256m"
-      memory: "256Mi"
-    limits:
-      cpu: "512m"
-      memory: "512Mi"
-
-  replicaCount: 1
-
-  image:
-    repository: mrflick72/vauthenticator-assets-k8s
-    pullPolicy: Always
-    tag: "latest"
-
-  lables: { }
-
-  selectorLabels:
-    app: vauthenticator-assets
-
-  podAnnotations: { }
-
-  server:
-    port: 80
-
-
 managementUiAssets:
   pod:
     probes:
@@ -302,13 +303,3 @@ managementUiAssets:
 
   server:
     port: 80
-
-
-imagePullSecrets: [ ]
-nameOverride: ""
-
-redis:
-  auth:
-    enabled: false
-  replica:
-    replicaCount: 1
