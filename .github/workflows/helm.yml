@@ -20,12 +20,6 @@ jobs:
           git config user.name "$GITHUB_ACTOR"
           git config user.email "$GITHUB_ACTOR@users.noreply.github.com"
 
-      - name: Create tag
-        uses: ncipollo/release-action@v1
-        with:
-          bodyFile: changelog/${{github.event.inputs.version}}.md
-          tag: ${{github.event.inputs.version}}
-
       - name: Install Helm
         uses: azure/setup-helm@v3
         with:
@@ -37,3 +31,10 @@ jobs:
           charts_repo_url: https://github.com/vauthenticator/vauthenticator-helm-charts
         env:
           CR_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
+
+
+      - name: Create tag
+        uses: ncipollo/release-action@v1
+        with:
+          bodyFile: changelog/${{github.event.inputs.version}}.md
+          tag: ${{github.event.inputs.version}}
