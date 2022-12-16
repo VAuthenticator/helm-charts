@@ -130,7 +130,7 @@ pod:
 
 ## Ingress
 
-Pod section is applied on `application`, `applicationAssets`, `managementUi` and `managementUiAssets` root field for
+Ingress section is applied on `application`, `applicationAssets`, `managementUi` and `managementUiAssets` root field for
 simplicity we show as root field application but the properties are valid for `applicationAssets`, `managementUi`
 and `managementUiAssets` too
 
