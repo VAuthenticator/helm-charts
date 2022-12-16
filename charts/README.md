@@ -4,7 +4,11 @@ It is the official helm chart for VAuthenticator ecosystem.
 
 # Global Components
 
-We discuss how configure global and general available properties
+We discuss how configure global and general available properties apart from that AWS and Redis section,
+Deployment, pod, lables and selectors section are applied on
+`application`, `applicationAssets`, `managementUi` and `managementUiAssets` root field.
+For simplicity we cover configuration without root but keep in mind that those generic stuff are available for all
+application root tag
 
 ## Redis
 
@@ -59,13 +63,10 @@ aws:
 | aws.eks.serviceAccount.enabled     | Identify that we want use a dedicated Service Account linked to an IAM identity Provider. <br/>This strategy is the best practice if VAuthenticator is deployed on AWS EKS | false                                      |
 | aws.eks.serviceAccount.iamRole.arn | It is the arn of the role used from STS to gain permissions                                                                                                                | arn:aws:iam::ACCOUNT_ID:role/IAM_ROLE_NAME |
 
-## KEDA
+## KEDA (application scoped)
 
 In order to apply autoscaling in VAuthenticator authorization server is possible configure [keda](https://keda.sh/) with
 prometheus metrics.
-
-KEDA is applied on `application` and `managementUi` root field for simplicity we show as root field application but
-the properties are valid for `managementUi` too
 
 #### yaml section
 
@@ -99,11 +100,7 @@ application:
 | application.keda.prometheus.threshold     | prometheus metric threshold to apply for autoscaling                                                                  | ""    |
 | application.keda.prometheus.query         | prometheus query to evaluate autoscaling                                                                              | ""    |
 
-## POD
-
-Pod section is applied on `application`, `applicationAssets`, `managementUi` and `managementUiAssets` root field for
-simplicity we show as root field application but the properties are valid for `applicationAssets`, `managementUi`
-and `managementUiAssets` too
+## POD (application scoped)
 
 #### yaml section
 
@@ -128,11 +125,7 @@ pod:
 | pod.probes.rediness.initialDelaySeconds | define for rediness probe the initial delay in seconds to wait to start to evaluate the probes | 10    |
 | pod.probes.rediness.periodSeconds       | define for rediness probe period in seconds to wait for the next evaluation                    | 30    |
 
-## Ingress
-
-Ingress section is applied on `application`, `applicationAssets`, `managementUi` and `managementUiAssets` root field for
-simplicity we show as root field application but the properties are valid for `applicationAssets`, `managementUi`
-and `managementUiAssets` too
+## Ingress (application scoped)
 
 #### yaml section
 
@@ -155,6 +148,8 @@ ingress:
 | ingress.enabled     | define if the ingress should be included in the resources                       | true  |
 | ingress.class       | define what kind of ingress class should be configured for teh ingress resource | nginx |
 
+## Pod Resources (application scoped)
+
 #### yaml section
 
 ```yaml
@@ -166,12 +161,47 @@ resources:
   limits:
     cpu: "512m"
     memory: "512Mi"
-replicaCount: 1
+
+```
+
+#### Properties description
+
+| Name                      | Description                               | Value   |
+|---------------------------|-------------------------------------------|---------|
+| resources.requests.cpu    | usual cpu kubernetes request parameter    | "256m"  |
+| resources.requests.memory | usual memory kubernetes request parameter | "256Mi" |
+| resources.limits.cpu      | usual cpu kubernetes limits parameter     | "512m"  |
+| resources.limits.memory   | usual memory kubernetes limits parameter  | "512Mi" |
+
+## Image (application scoped)
+
+#### yaml section
+
+```yaml
 
 image:
   repository: mrflick72/vauthenticator-k8s
   pullPolicy: Always
   tag: "latest"
+
+```
+
+#### Properties description
+
+| Name             | Description                               | Value      |
+|------------------|-------------------------------------------|------------|
+| image.repository | usual cpu kubernetes request parameter    | it depends |
+| image.pullPolicy | usual memory kubernetes request parameter | Always     |
+| image.tag        | usual cpu kubernetes limits parameter     | "latest"   |
+
+## Replicas count, Lables and selectors (application scoped)
+
+#### yaml section
+
+```yaml
+service:
+  type: ClusterIP
+replicaCount: 1
 
 lables: { }
 
@@ -179,69 +209,160 @@ selectorLabels:
   app: vauthenticator
 
 podAnnotations: { }
-
-
-masterKey: ACCOUNT_KMS_KEY
-
-redis:
-  database: 0
-  host: vauthenticator-redis-master.auth.svc.cluster.local
-
-server:
-  port: 8080
-
-baseUrl: http://application-example-host.com
-backChannelBaseUrl: http://vauthenticator:8080
-
-
-mailProvider:
-  enabled: false
-  host: localhost
-  port: 587
-  username: ""
-  password: ""
-  properties: { }
-
-mail:
-  from: ""
-  welcomeMailSubject: ""
-  verificationMailSubject: ""
-  resetPasswordMailSubject: ""
-  mfaMailSubject: ""
-
-dynamoDb:
-  account:
-    tableName: your_VAuthenticator_Account_table_name
-    role:
-      tableName: your_VAuthenticator_Account_Role_table_name
-  role:
-    tableName: your_VAuthenticator_Role_table_name
-  clientApplication:
-    tableName: your_VAuthenticator_ClientApplication_table_name
-  mfaAccountMethods:
-    tableName: your_VAuthenticator_mfaAccountMethods_table_name
-  keys:
-    mfa:
-      tableName: your_VAuthenticator_Mfa-Keys_table_name
-    signature:
-      tableName: your_VAuthenticator_Signature_Keys_table_name
-    tableName: your_VAuthenticator_Keys_table_name
-  ticket:
-    tableName: your_VAuthenticator_tICKET_table_name
-
-documentRepository:
-  bucketName: test
-
-mfa:
-  otp:
-    otpLength: 6
-    otpTimeToLiveInSeconds: 30
-
-assetServer:
-  baseUrl: http://localhost:3000/asset
-
 ```
+
+#### Properties description
+
+| Name           | Description                                                                                   | Value      |
+|----------------|-----------------------------------------------------------------------------------------------|------------|
+| replicaCount   | define how many pod replicas you want                                                         | 1          |
+| service.type   | **do not touch this this** it is used internally                                              | ClusterIP  |
+| selectorLabels | **do not touch this this** it is used internally as common selector for pod service and so on | it depends |
+| lables         | define pod lables if requred                                                                  | { }        |
+| podAnnotations | define pod annotations if requred                                                             | { }        |
 
 # VAuthenticator Authorization Server
 
+## Authorization Server
+
+Authorization server backend application configuration
+
+#### yaml section
+
+```yaml
+application:
+  masterKey: ACCOUNT_KMS_KEY
+
+  redis:
+    database: 0
+    host: vauthenticator-redis-master.auth.svc.cluster.local
+
+  server:
+    port: 8080
+
+  baseUrl: http://application-example-host.com
+  backChannelBaseUrl: http://vauthenticator:8080
+
+
+  mailProvider:
+    enabled: false
+    host: localhost
+    port: 587
+    username: ""
+    password: ""
+    properties: { }
+
+  mail:
+    from: ""
+    welcomeMailSubject: ""
+    verificationMailSubject: ""
+    resetPasswordMailSubject: ""
+    mfaMailSubject: ""
+
+  dynamoDb:
+    account:
+      tableName: your_VAuthenticator_Account_table_name
+      role:
+        tableName: your_VAuthenticator_Account_Role_table_name
+    role:
+      tableName: your_VAuthenticator_Role_table_name
+    clientApplication:
+      tableName: your_VAuthenticator_ClientApplication_table_name
+    mfaAccountMethods:
+      tableName: your_VAuthenticator_mfaAccountMethods_table_name
+    keys:
+      mfa:
+        tableName: your_VAuthenticator_Mfa-Keys_table_name
+      signature:
+        tableName: your_VAuthenticator_Signature_Keys_table_name
+      tableName: your_VAuthenticator_Keys_table_name
+    ticket:
+      tableName: your_VAuthenticator_tICKET_table_name
+
+  documentRepository:
+    bucketName: test
+
+  mfa:
+    otp:
+      otpLength: 6
+      otpTimeToLiveInSeconds: 30
+
+  assetServer:
+    baseUrl: http://localhost:3000/asset
+
+```
+
+#### Properties description
+
+| Name                                             | Description                                                                                                                                | Value                                              |
+|--------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------|----------------------------------------------------|
+| application.masterKey                            | KMS Master key as starting key to generate data key data key pair to sign tokens, MFA and data encryption                                  | your kms key id                                    |
+| application.redis.database                       | Redis database used by vauthenticator authorization server                                                                                 | 0                                                  |
+| application.host                                 | Redis database host used by vauthenticator authorization server                                                                            | vauthenticator-redis-master.auth.svc.cluster.local |
+| application. server.port                         | standard port in which the main tomcat is exposed <br/>**do not touch it!** it is useless lets to use ingress to access to the main tomcat | 8080                                               |
+| application.baseUrl                              | public url to reach the authorization server                                                                                               |                                                    |
+| application.backChannelBaseUrl                   | machine to machine url to reach the authorization server typically it should be kubernetes service                                         | http://vauthenticator:8080                         |
+| application.mailProvider.enabled                 | define if enable mail communication support                                                                                                | false                                              |
+| application.mailProvider.host                    | mail server host                                                                                                                           | localhost                                          |
+| application.mailProvider.port                    | mail server used port                                                                                                                      | 587                                                |
+| application.mailProvider.username                | mail server account username                                                                                                               | ""                                                 |
+| application.mailProvider.password                | mail server account password                                                                                                               | ""                                                 |
+| application.mailProvider.properties              | mail server additional properties                                                                                                          | { }                                                |
+| application.mail.from                            | mail form default field                                                                                                                    | ""                                                 |
+| application.mail.welcomeMailSubject              | subject for welcome mail                                                                                                                   | ""                                                 |
+| application.mail.verificationMailSubject         | subject for account verification mail                                                                                                      | ""                                                 |
+| application.mail.resetPasswordMailSubject        | subject for account password reset                                                                                                         | ""                                                 |
+| application.mail.mfaMailSubject                  | subject for account mfa verification0                                                                                                      | ""                                                 |
+| application.dynamoDb.account.tableName           | Account Table Name                                                                                                                         | your_VAuthenticator_Account_table_name             |
+| application.dynamoDb.account.role.tableName      | Account Roles Table Name                                                                                                                   | your_VAuthenticator_Account_Role_table_name        |
+| application.dynamoDb.role.tableName              | Roles Table Name                                                                                                                           | your_VAuthenticator_Role_table_name                |
+| application.dynamoDb.clientApplication.tableName | Client Applications Table Name                                                                                                             | your_VAuthenticator_ClientApplication_table_name   |
+| application.dynamoDb.mfaAccountMethods.tableName | MFA Account Methods Table Name                                                                                                             | your_VAuthenticator_mfaAccountMethods_table_name   |
+| application.dynamoDb.keys.mfa.tableName          | MFA keys Table Name                                                                                                                        | your_VAuthenticator_Mfa_Keys_table_name            |
+| application.dynamoDb.keys.signature.tableName    | Token Signature Keys Table Name                                                                                                            | your_VAuthenticator_Signature_Keys_table_name      |
+| application.dynamoDb.ticket.tableName            | Ticket used for mail verification, password reset and so on Table Name                                                                     | your_VAuthenticator_Ticket_table_name              |
+| application.documentRepository.bucketName        | S3 Document Storage bucket name                                                                                                            | test                                               |
+| application.mfa.otp.otpLength                    | mfa otp code length                                                                                                                        | 6                                                  |
+| application.mfa.otp.otpTimeToLiveInSeconds       | mfa otp ttl                                                                                                                                | 30                                                 |
+| application.assetServer.baseUrl                  | asset server for login, mfa and other pages                                                                                                | http://localhost:3000/asset                        |
+
 # VAuthenticator Authorization Server Management UI
+
+Authorization server Management UI backend application configuration
+
+#### yaml section
+
+```yaml
+managementUi:
+  enabled: false
+  redis:
+    database: 1
+    host: vauthenticator-redis-master.auth.svc.cluster.local
+
+  server:
+    port: 8080
+
+  sso:
+    clientApp:
+      clientId: vauthenticator-management-ui
+      clientSecret: secret
+
+  baseUrl: http://application-example-host.com
+
+  assetServer:
+    baseUrl: http://localhost:3000/asset
+
+```
+
+#### Properties description
+
+| Name                                    | Description                                                                                                                                | Value                                              |
+|-----------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------|----------------------------------------------------|
+| managementUi.enabled                    | define if management ui have to be deployed                                                                                                | false                                              |
+| managementUi.redis.database             | Redis database used by vauthenticator authorization server                                                                                 | 0                                                  |
+| managementUi.host                       | Redis database host used by vauthenticator authorization server                                                                            | vauthenticator-redis-master.auth.svc.cluster.local |
+| managementUi.server.port                | standard port in which the main tomcat is exposed <br/>**do not touch it!** it is useless lets to use ingress to access to the main tomcat | 8080                                               |
+| managementUi.sso.clientApp.clientId     |                                                                                                                                            | authenticator-management-ui                        |
+| managementUi.sso.clientApp.clientSecret |                                                                                                                                            | secret                                             |
+| managementUi.baseUrl                    |                                                                                                                                            | http://application-example-host.com                |
+| managementUi.assetServer.baseUrl        |                                                                                                                                            | http://localhost:3000/asset                        |
