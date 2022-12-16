@@ -145,6 +145,16 @@ ingress:
   class: nginx
 ```
 
+#### Properties description
+
+| Name                | Description                                                                     | Value |
+|---------------------|---------------------------------------------------------------------------------|-------|
+| ingress.host        | define on what host the ingress resource should be configured to answer         | *     |
+| ingress.annotations | define annotations for the ingress resource                                     | { }   |
+| ingress.tls         | define tls configuration for the ingress resource                               | { }   |
+| ingress.enabled     | define if the ingress should be included in the resources                       | true  |
+| ingress.class       | define what kind of ingress class should be configured for teh ingress resource | nginx |
+
 #### yaml section
 
 ```yaml
