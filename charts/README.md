@@ -23,9 +23,9 @@ in-namespace:
 
 #### Properties description
 
-| Name                       | Description                  | Value |
-|----------------------------|------------------------------|-------|
-| in-namespace.redis.enabled | AWS Region like eu-central-1 | true  |
+| Name                       | Description                         | Value |
+|----------------------------|-------------------------------------|-------|
+| in-namespace.redis.enabled | if install a redis in k8s namespace | true  |
 
 ## AWS
 
