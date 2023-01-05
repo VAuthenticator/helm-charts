@@ -109,6 +109,9 @@ application:
   dynamoDb:
     account:
       tableName: your_VAuthenticator_Account_table_name
+      cache:
+        ttl: 1h
+        name: account_cache
       role:
         tableName: your_VAuthenticator_Account_Role_table_name
     role:
