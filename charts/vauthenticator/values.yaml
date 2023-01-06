@@ -118,6 +118,9 @@ application:
       tableName: your_VAuthenticator_Role_table_name
     clientApplication:
       tableName: your_VAuthenticator_ClientApplication_table_name
+      cache:
+        ttl: 1m
+        name: client-application
     mfaAccountMethods:
       tableName: your_VAuthenticator_mfaAccountMethods_table_name
     keys:
