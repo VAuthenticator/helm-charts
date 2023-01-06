@@ -23,6 +23,14 @@ aws:
 imagePullSecrets: [ ]
 
 application:
+  aws:
+    s3:
+      endpointOverride:
+    kms:
+      endpointOverride:
+    dynamodb:
+      endpointOverride:
+
   keda:
     enabled: false
     spec:
