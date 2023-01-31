@@ -42,7 +42,7 @@ data:
     event:
       consumer:
         enable:
-          logger-event-consumer: ${{ .Values.application.events.enableLoggerConsumer }}
+          logger-event-consumer: {{ .Values.application.events.enableLoggerConsumer }}
     mfa:
       otp:
         length: {{ .Values.application.mfa.otp.otpLength }}
