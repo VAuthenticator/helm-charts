@@ -150,6 +150,8 @@ application:
   assetServer:
     baseUrl: http://localhost:3000/asset
 
+  events:
+    enableLoggerConsumer: false
 
 applicationAssets:
   pod:

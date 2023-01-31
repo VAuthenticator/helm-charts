@@ -39,10 +39,14 @@ data:
         mfaMailSubject: {{ .Values.application.mail.mfaMailSubject }}
   {{- end }}
 
+    event:
+      consumer:
+        enable:
+          logger-event-consumer: ${{ .Values.application.events.enableLoggerConsumer }}
     mfa:
       otp:
-        otpLength: {{ .Values.application.mfa.otp.otpLength }}
-        otpTimeToLiveInSeconds: {{ .Values.application.mfa.otp.otpTimeToLiveInSeconds }}
+        length: {{ .Values.application.mfa.otp.otpLength }}
+        timeToLiveInSeconds: {{ .Values.application.mfa.otp.otpTimeToLiveInSeconds }}
 
     spring:
       main:
