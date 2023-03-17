@@ -18,13 +18,9 @@ data:
     endSessionWithoutDiscovery: true
     oidcEndSessionUrl: {{ .Values.application.baseUrl }}/oidc/logout
     auth.oidcIss: {{ .Values.application.baseUrl }}
-    logging.file.name: /var/log/onlyone-portal/logs/${spring.application.name}.log
 
     assetServer:
       baseUrl: {{ .Values.application.assetServer.baseUrl }}
-
-    features:
-      mail-sender-enabled: {{ .Values.application.mailProvider.enabled }}
 
     document:
       bucket-name: {{ .Values.application.documentRepository.bucketName }}
@@ -140,7 +136,6 @@ data:
     endSessionWithoutDiscovery: true
     oidcEndSessionUrl: {{ .Values.application.baseUrl }}/oidc/logout
     auth.oidcIss: {{ .Values.application.baseUrl }}
-    logging.file.name: /var/log/onlyone-portal/logs/${spring.application.name}.log
 
     postLogoutRedirectUri: {{ .Values.managementUi.baseUrl }}/secure/admin/index
 

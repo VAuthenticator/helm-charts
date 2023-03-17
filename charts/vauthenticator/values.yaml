@@ -127,7 +127,7 @@ application:
     clientApplication:
       tableName: your_VAuthenticator_ClientApplication_table_name
       cache:
-        ttl: 1m
+        ttl: 1h
         name: client-application
     mfaAccountMethods:
       tableName: your_VAuthenticator_mfaAccountMethods_table_name
