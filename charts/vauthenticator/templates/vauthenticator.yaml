@@ -1,0 +1,261 @@
+---
+
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: application-config
+  namespace: {{ .Release.Namespace }}
+data:
+  application.yml: |
+    aws:
+      s3:
+        endpointOverride: {{ .Values.application.aws.s3.endpointOverride}}
+      kms:
+        endpointOverride: {{ .Values.application.aws.kms.endpointOverride}}
+      dynamodb:
+        endpointOverride: {{ .Values.application.aws.dynamodb.endpointOverride}}
+
+    key:
+      master-key: {{ .Values.application.masterKey }}
+    endSessionWithoutDiscovery: true
+    oidcEndSessionUrl: {{ .Values.application.baseUrl }}/oidc/logout
+    auth.oidcIss: {{ .Values.application.baseUrl }}
+
+    assetServer:
+      on-s3:
+        enabled: {{ .Values.application.assetServer.onS3.enabled }}
+        cache:
+          ttl: {{ .Values.application.assetServer.onS3.cache.ttl }}
+      baseUrl: {{ .Values.application.assetServer.baseUrl }}
+
+    document:
+      bucket-name: {{ .Values.application.documentRepository.bucketName }}
+
+    {{- if eq .Values.application.mailProvider.enabled true }}
+    no-reply:
+      mail:
+        from: {{ .Values.application.mail.from }}
+        welcomeMailSubject: {{ .Values.application.mail.welcomeMailSubject }}
+        verificationMailSubject: {{ .Values.application.mail.verificationMailSubject }}
+        resetPasswordMailSubject: {{ .Values.application.mail.resetPasswordMailSubject }}
+        mfaMailSubject: {{ .Values.application.mail.mfaMailSubject }}
+  {{- end }}
+
+    event:
+      consumer:
+        enable:
+          logger-event-consumer: {{ .Values.application.events.enableLoggerConsumer }}
+    mfa:
+      otp:
+        length: {{ .Values.application.mfa.otp.otpLength }}
+        timeToLiveInSeconds: {{ .Values.application.mfa.otp.otpTimeToLiveInSeconds }}
+
+    spring:
+      main:
+        lazy-initialization: true
+    {{- if eq .Values.application.mailProvider.enabled true }}
+      mail:
+        host: {{ .Values.application.mailProvider.host }}
+        port: {{ .Values.application.mailProvider.port }}
+        username: {{ .Values.application.mailProvider.username }}
+        password: {{ .Values.application.mailProvider.password }}
+        properties:
+        {{- toYaml .Values.application.mailProvider.properties | nindent 10 }}
+
+    {{- end }}
+
+      security:
+        oauth2:
+          resourceserver:
+            jwt:
+              jwk-set-uri: http://localhost:${server.port}/oauth2/jwks
+      data:
+        redis:
+          database: {{ .Values.application.redis.database }}
+          host: {{ .Values.application.redis.host }}
+
+    server:
+      port: {{ .Values.application.server.port }}
+      forward-headers-strategy: framework
+      servlet:
+        context-path: /
+      http2:
+        enabled: true
+      compression:
+        enabled: true
+        min-response-size: 1KB
+
+    management:
+      server:
+        port: 8081
+        servlet:
+          context-path: /
+      endpoints:
+        web:
+          exposure:
+            include: "*"
+      endpoint:
+        shutdown:
+          enabled: true
+        health:
+          show-details: ALWAYS
+
+    vauthenticator:
+      dynamo-db:
+        account:
+          table-name: {{ .Values.application.dynamoDb.account.tableName }}
+          cache:
+            ttl: {{ .Values.application.dynamoDb.account.cache.ttl }}
+            name: {{ .Values.application.dynamoDb.account.cache.name }}
+        account.table-name: {{ .Values.application.dynamoDb.account.tableName }}
+        account.role.table-name: {{ .Values.application.dynamoDb.account.role.tableName }}
+        role.table-name: {{ .Values.application.dynamoDb.role.tableName }}
+        client-application:
+          table-name: {{ .Values.application.dynamoDb.clientApplication.tableName }}
+          cache:
+            ttl: {{ .Values.application.dynamoDb.clientApplication.cache.ttl }}
+            name: {{ .Values.application.dynamoDb.clientApplication.cache.name }}
+        mfa-account-methods.table-name: {{ .Values.application.dynamoDb.mfaAccountMethods.tableName  }}
+        keys.mfa.table-name: {{ .Values.application.dynamoDb.keys.mfa.tableName }}
+        keys.signature.table-name: {{ .Values.application.dynamoDb.keys.signature.tableName }}
+        ticket.table-name:  {{ .Values.application.dynamoDb.ticket.tableName }}
+      host: {{ .Values.application.baseUrl }}
+    {{- if eq .Values.aws.iamUser.enabled true }}
+    iamUserAwsCredentialsProvider: true
+    {{ end }}
+
+    {{- if eq .Values.aws.eks.serviceAccount.enabled true }}
+    iamServiceAccountAwsCredentialsProvider: true
+    {{ end }}
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "vauthenticator.name" . }}
+  namespace: {{ .Release.Namespace }}
+spec:
+  replicas: {{ .Values.application.replicaCount }}
+  selector:
+    matchLabels:
+  {{- include "vauthenticator.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      {{- with .Values.application.podAnnotations }}
+      annotations:
+      {{- toYaml . | nindent 8 }}
+      {{- end }}
+      labels:
+      {{- with .Values.application.lables }}
+      {{- toYaml .Values.application.lables | nindent 8 }}
+      {{ end }}
+    {{- include "vauthenticator.selectorLabels" . | nindent 8 }}
+    spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+      {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- if eq .Values.aws.eks.serviceAccount.enabled true }}
+      serviceAccountName: {{ include "vauthenticator.name" . }}
+        {{ end }}
+      volumes:
+        - name: application-logs
+          emptyDir: { }
+
+        - name: application-config
+          configMap:
+            name: application-config
+
+      containers:
+        - name: {{ .Chart.Name }}
+          volumeMounts:
+            - name: application-logs
+              mountPath: /var/log/onlyone-portal/logs/
+
+            - name: application-config
+              subPath: application.yml
+              mountPath: /usr/local/onlyone-portal/config/application.yml
+
+          image: "{{ .Values.application.image.repository }}:{{ .Values.application.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.application.image.pullPolicy }}
+          ports:
+            - containerPort: {{ .Values.application.server.port }}
+            - containerPort: 8081
+          livenessProbe:
+            httpGet:
+              path: /actuator/health
+              port: 8081
+            initialDelaySeconds: {{ .Values.application.pod.probes.liveness.initialDelaySeconds }}
+            periodSeconds: {{ .Values.application.pod.probes.liveness.periodSeconds }}
+
+          readinessProbe:
+            httpGet:
+              path: /actuator/health
+              port: 8081
+            initialDelaySeconds: {{ .Values.application.pod.probes.rediness.initialDelaySeconds }}
+            periodSeconds: {{ .Values.application.pod.probes.rediness.periodSeconds }}
+          resources:
+          {{- toYaml .Values.application.resources | nindent 12 }}
+          env:
+            {{- if eq .Values.aws.iamUser.enabled true }}
+            - name: AWS_ACCESS_KEY_ID
+              value: {{ .Values.aws.iamUser.accessKey }}
+
+            - name: AWS_SECRET_ACCESS_KEY
+              value: {{ .Values.aws.iamUser.secretKey }}
+            {{ end }}
+            - name: AWS_REGION
+              value: {{ .Values.aws.region }}
+
+            - name: spring.config.additional-location
+              value: /usr/local/onlyone-portal/config/
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "vauthenticator.name" . }}
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "vauthenticator.labels" . | nindent 4 }}
+spec:
+  type: {{ .Values.application.service.type }}
+  ports:
+    - port: {{ .Values.application.server.port }}
+      name: http
+  selector:
+    {{- include "vauthenticator.selectorLabels" . | nindent 4 }}
+
+---
+
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: {{ include "vauthenticator.name" . }}
+  namespace: {{ .Release.Namespace }}
+  annotations:
+    kubernetes.io/ingress.class: {{ .Values.application.ingress.class }}
+    {{- with .Values.application.ingress.annotations }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
+
+
+spec:
+  rules:
+    - http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: {{ include "vauthenticator.name" . }}
+                port:
+                  number: {{ .Values.application.server.port }}
+      host: {{  .Values.application.ingress.host }}
+    {{- with .Values.application.ingress.tls }}
+  tls:
+  {{- toYaml . | nindent 4}}
+    {{- end }}
+

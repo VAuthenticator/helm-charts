@@ -158,6 +158,7 @@ application:
     enableLoggerConsumer: false
 
 applicationAssets:
+  enabled: true
   pod:
     probes:
       liveness:
