@@ -39,8 +39,8 @@ data:
 
     postLogoutRedirectUri: {{ .Values.managementUi.baseUrl }}/secure/admin/index
 
-    documentRepository:
-      bucketName: {{ .Values.managementUi.documentRepository.bucketName }}
+    document:
+      bucket-name: {{ .Values.managementUi.documentRepository.bucketName }}
 
     spring:
       main:
