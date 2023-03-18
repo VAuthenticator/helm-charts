@@ -148,6 +148,10 @@ application:
       otpTimeToLiveInSeconds: 30
 
   assetServer:
+    onS3:
+      enabled: false
+      cache:
+        ttl: 1m
     baseUrl: http://localhost:3000/asset
 
   events:
@@ -271,6 +275,10 @@ managementUi:
   baseUrl: http://application-example-host.com
 
   assetServer:
+    onS3:
+      enabled: false
+      cache:
+        ttl: 1m
     baseUrl: http://localhost:3000/asset
 
 managementUiAssets:
