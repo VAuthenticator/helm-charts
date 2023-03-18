@@ -39,6 +39,9 @@ data:
 
     postLogoutRedirectUri: {{ .Values.managementUi.baseUrl }}/secure/admin/index
 
+    documentRepository:
+      bucketName: {{ .Values.managementUi.documentRepository.bucketName }}
+
     spring:
       main:
         lazy-initialization: true

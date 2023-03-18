@@ -267,6 +267,8 @@ managementUi:
   server:
     port: 8080
 
+  documentRepository:
+    bucketName: test
   sso:
     clientApp:
       clientId: vauthenticator-management-ui
