@@ -1,3 +1,6 @@
+{{- if eq .Values.managementUiAssets.enabled true }}
+
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -48,3 +51,53 @@ spec:
             periodSeconds: {{ .Values.managementUiAssets.pod.probes.rediness.periodSeconds }}
           resources:
           {{- toYaml .Values.managementUiAssets.resources | nindent 12 }}
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "vauthenticator-management-ui-assets.name" . }}
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "vauthenticator-management-ui-assets.labels" . | nindent 4 }}
+spec:
+  type: {{ .Values.applicationAssets.service.type }}
+  ports:
+    - port: 80
+      name: http
+  selector:
+    {{- include "vauthenticator-management-ui-assets.selectorLabels" . | nindent 4 }}
+
+---
+
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: {{ include "vauthenticator-management-ui-assets.name" . }}
+  namespace: {{ .Release.Namespace }}
+  annotations:
+    kubernetes.io/ingress.class: {{ .Values.applicationAssets.ingress.class }}
+    {{- with .Values.managementUiAssets.ingress.annotations }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
+
+
+spec:
+  rules:
+    - http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: {{ include "vauthenticator-management-ui-assets.name" . }}
+                port:
+                  number: {{ .Values.applicationAssets.server.port }}
+      host: {{  .Values.managementUiAssets.ingress.host }}
+    {{- with .Values.managementUiAssets.ingress.tls }}
+  tls:
+  {{- toYaml . | nindent 4}}
+    {{- end }}
+
+  {{ end }}

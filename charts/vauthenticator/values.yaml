@@ -205,7 +205,6 @@ applicationAssets:
     port: 80
 
 managementUi:
-  enabled: false
   keda:
     enabled: false
     spec:
@@ -283,6 +282,7 @@ managementUi:
     baseUrl: http://localhost:3000/asset
 
 managementUiAssets:
+  enabled: true
   pod:
     probes:
       liveness:
