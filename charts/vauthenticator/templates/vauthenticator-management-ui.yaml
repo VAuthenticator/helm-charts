@@ -40,7 +40,7 @@ data:
     postLogoutRedirectUri: {{ .Values.managementUi.baseUrl }}/secure/admin/index
 
     document:
-      bucket-name: :{{ .Values.managementUi.documentRepository.bucketName }}
+      bucket-name: {{ .Values.managementUi.documentRepository.bucketName }}
 
     spring:
       main:
