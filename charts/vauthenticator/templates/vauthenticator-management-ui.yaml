@@ -120,6 +120,13 @@ data:
       cache:
         ttl: {{ .Values.managementUi.assetServer.onS3.cache.ttl }}
       baseUrl: {{ .Values.managementUi.assetServer.baseUrl }}
+   {{- if eq .Values.aws.iamUser.enabled true }}
+    iamUserAwsCredentialsProvider: true
+    {{ end }}
+
+    {{- if eq .Values.aws.eks.serviceAccount.enabled true }}
+    iamServiceAccountAwsCredentialsProvider: true
+    {{ end }}
 
 ---
 
