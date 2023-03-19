@@ -148,12 +148,17 @@ application:
       otpTimeToLiveInSeconds: 30
 
   assetServer:
+    onS3:
+      enabled: false
+      cache:
+        ttl: 1m
     baseUrl: http://localhost:3000/asset
 
   events:
     enableLoggerConsumer: false
 
 applicationAssets:
+  enabled: true
   pod:
     probes:
       liveness:
@@ -200,7 +205,6 @@ applicationAssets:
     port: 80
 
 managementUi:
-  enabled: false
   keda:
     enabled: false
     spec:
@@ -263,6 +267,9 @@ managementUi:
   server:
     port: 8080
 
+  documentRepository:
+    bucketName: test
+
   sso:
     clientApp:
       clientId: vauthenticator-management-ui
@@ -271,9 +278,14 @@ managementUi:
   baseUrl: http://application-example-host.com
 
   assetServer:
+    onS3:
+      enabled: false
+      cache:
+        ttl: 1m
     baseUrl: http://localhost:3000/asset
 
 managementUiAssets:
+  enabled: true
   pod:
     probes:
       liveness:
