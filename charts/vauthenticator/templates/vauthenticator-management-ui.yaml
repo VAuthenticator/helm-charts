@@ -61,6 +61,8 @@ data:
                   - "email"
                   - "admin:key-reader"
                   - "admin:key-editor"
+                  - "admin:mail-template-reader"
+                  - "admin:mail-template-writer"
                 redirect-uri: {{ .Values.managementUi.baseUrl }}/login/oauth2/code/client
                 authorization-grant-type: authorization_code
             provider:
