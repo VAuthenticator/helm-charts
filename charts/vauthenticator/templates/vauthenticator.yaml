@@ -35,11 +35,16 @@ data:
   application.yml: |
     aws:
       s3:
-        endpointOverride: {{ .Values.application.aws.s3.endpointOverride}}
+        endpointOverride: {{ .Values.application.aws.s3.endpointOverride }}
       kms:
-        endpointOverride: {{ .Values.application.aws.kms.endpointOverride}}
+        endpointOverride: {{ .Values.application.aws.kms.endpointOverride }}
       dynamodb:
-        endpointOverride: {{ .Values.application.aws.dynamodb.endpointOverride}}
+        endpointOverride: {{ .Values.application.aws.dynamodb.endpointOverride }}
+
+    password:
+      policy:
+        minSize: {{ .Values.application.password.policy.minSize }}
+        minSpecialSymbol: {{ .Values.application.password.policy.minSpecialSymbol }}
 
     key:
       master-key: {{ .Values.application.masterKey }}
@@ -78,7 +83,7 @@ data:
 
     spring:
       main:
-        lazy-initialization: true
+        lazy-initialization: false
     {{- if eq .Values.application.mailProvider.enabled true }}
       mail:
         host: {{ .Values.application.mailProvider.host }}

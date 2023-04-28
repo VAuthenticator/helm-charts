@@ -23,6 +23,11 @@ aws:
 imagePullSecrets: [ ]
 
 application:
+  password:
+    policy:
+      minSize: 1
+      minSpecialSymbol: 1
+
   aws:
     s3:
       endpointOverride:
