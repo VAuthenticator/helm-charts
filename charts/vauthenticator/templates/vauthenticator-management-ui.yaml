@@ -44,7 +44,7 @@ data:
 
     spring:
       main:
-        lazy-initialization: true
+        lazy-initialization: false
 
       security:
         oauth2:

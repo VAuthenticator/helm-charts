@@ -83,7 +83,7 @@ data:
 
     spring:
       main:
-        lazy-initialization: true
+        lazy-initialization: false
     {{- if eq .Values.application.mailProvider.enabled true }}
       mail:
         host: {{ .Values.application.mailProvider.host }}
