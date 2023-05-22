@@ -129,6 +129,9 @@ application:
         tableName: your_VAuthenticator_Account_Role_table_name
     role:
       tableName: your_VAuthenticator_Role_table_name
+      cache:
+        ttl: 1h
+        name: role_cache
     clientApplication:
       tableName: your_VAuthenticator_ClientApplication_table_name
       cache:
