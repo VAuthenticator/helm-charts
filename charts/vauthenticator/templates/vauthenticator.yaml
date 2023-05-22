@@ -141,9 +141,9 @@ data:
         account.role.table-name: {{ .Values.application.dynamoDb.account.role.tableName }}
         role:
           table-name: {{ .Values.application.dynamoDb.role.tableName }}
-            cache:
-              ttl: {{ .Values.application.dynamoDb.role.cache.ttl }}
-              name: {{ .Values.application.dynamoDb.role.cache.name }}
+          cache:
+            ttl: {{ .Values.application.dynamoDb.role.cache.ttl }}
+            name: {{ .Values.application.dynamoDb.role.cache.name }}
         client-application:
           table-name: {{ .Values.application.dynamoDb.clientApplication.tableName }}
           cache:
