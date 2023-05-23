@@ -132,6 +132,7 @@ application:
       cache:
         ttl: 1h
         name: role_cache
+      protectedFromDelete: ROLE_USER,VAUTHENTICATOR_ADMIN
     clientApplication:
       tableName: your_VAuthenticator_ClientApplication_table_name
       cache:
