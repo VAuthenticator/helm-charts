@@ -48,19 +48,28 @@ data:
 
     key:
       master-key: {{ .Values.application.masterKey }}
-    endSessionWithoutDiscovery: true
     oidcEndSessionUrl: {{ .Values.application.baseUrl }}/oidc/logout
     auth.oidcIss: {{ .Values.application.baseUrl }}
 
     assetServer:
       on-s3:
         enabled: {{ .Values.application.assetServer.onS3.enabled }}
-        cache:
-          ttl: {{ .Values.application.assetServer.onS3.cache.ttl }}
       baseUrl: {{ .Values.application.assetServer.baseUrl }}
 
     document:
+      engine: {{ .Values.application.documentRepository.engine }}
+      fs-base-path: {{ .Values.application.documentRepository.fsBasePath }}
       bucket-name: {{ .Values.application.documentRepository.bucketName }}
+      document-type:
+        mail:
+          cache:
+            name: {{ .Values.application.documentRepository.documentType.mail.cacheName }}
+            ttl: {{ .Values.application.documentRepository.documentType.mail.cacheTtl }}
+        static-asset:
+          cache:
+            name: {{ .Values.application.documentRepository.documentType.staticAsset.cacheName }}
+            ttl: {{ .Values.application.documentRepository.documentType.staticAsset.cacheTtl }}
+
 
     {{- if eq .Values.application.mailProvider.enabled true }}
     no-reply:
