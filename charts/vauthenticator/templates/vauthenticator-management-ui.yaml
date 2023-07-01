@@ -33,14 +33,24 @@ metadata:
   namespace: {{ .Release.Namespace }}
 data:
   application.yml: |
-    endSessionWithoutDiscovery: true
     oidcEndSessionUrl: {{ .Values.application.baseUrl }}/oidc/logout
     auth.oidcIss: {{ .Values.application.baseUrl }}
 
     postLogoutRedirectUri: {{ .Values.managementUi.baseUrl }}/secure/admin/index
 
     document:
+      engine: {{ .Values.managementUi.documentRepository.engine }}
+      fs-base-path: {{ .Values.managementUi.documentRepository.fsBasePath }}
       bucket-name: {{ .Values.managementUi.documentRepository.bucketName }}
+      document-type:
+        mail:
+          cache:
+            name: {{ .Values.managementUi.documentRepository.documentType.mail.cacheName }}
+            ttl: {{ .Values.managementUi.documentRepository.documentType.mail.cacheTtl }}
+        static-asset:
+          cache:
+            name: {{ .Values.managementUi.documentRepository.documentType.staticAsset.cacheName }}
+            ttl: {{ .Values.managementUi.documentRepository.documentType.staticAsset.cacheTtl }}
 
     spring:
       main:
@@ -119,9 +129,8 @@ data:
     assetServer:
       on-s3:
         enabled: {{ .Values.managementUi.assetServer.onS3.enabled }}
-      cache:
-        ttl: {{ .Values.managementUi.assetServer.onS3.cache.ttl }}
       baseUrl: {{ .Values.managementUi.assetServer.baseUrl }}
+
    {{- if eq .Values.aws.iamUser.enabled true }}
     iamUserAwsCredentialsProvider: true
     {{ end }}
