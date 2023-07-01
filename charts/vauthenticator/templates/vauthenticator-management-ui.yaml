@@ -129,8 +129,6 @@ data:
     assetServer:
       on-s3:
         enabled: {{ .Values.managementUi.assetServer.onS3.enabled }}
-      cache:
-        ttl: {{ .Values.managementUi.assetServer.onS3.cache.ttl }}
       baseUrl: {{ .Values.managementUi.assetServer.baseUrl }}
 
    {{- if eq .Values.aws.iamUser.enabled true }}
