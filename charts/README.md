@@ -6,8 +6,8 @@ It is the official helm chart for VAuthenticator ecosystem.
 
 We discuss how configure global and general available properties apart from that AWS and Redis section,
 Deployment, pod, lables and selectors section are applied on
-`application`, `applicationAssets`, `managementUi` and `managementUiAssets` root field.
-For simplicity we cover configuration without root but keep in mind that those generic stuff are available for all
+`application`, `managementUi` and root field.
+To make it simple we cover configuration without root but keep in mind that those generic stuff are available for all
 application root tag
 
 ## Redis
@@ -279,8 +279,17 @@ application:
     ticket:
       tableName: your_VAuthenticator_tICKET_table_name
 
-  documentRepository:
-    bucketName: test
+    documentRepository:
+      engine: s3
+      bucketName: test
+      fsBasePath: dist
+      documentType:
+        mail:
+          cacheName:
+          cacheTtl: 1m
+        staticAsset:
+          cacheName:
+          cacheTtl: 1m
 
   mfa:
     otp:
@@ -288,43 +297,52 @@ application:
       otpTimeToLiveInSeconds: 30
 
   assetServer:
-    baseUrl: http://localhost:3000/asset
+    onS3:
+      enabled: false
+    baseUrl: http://localhost:8080
 
 ```
 
 #### Properties description
 
-| Name                                             | Description                                                                                                                                | Value                                              |
-|--------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------|----------------------------------------------------|
-| application.masterKey                            | KMS Master key as starting key to generate data key data key pair to sign tokens, MFA and data encryption                                  | your kms key id                                    |
-| application.redis.database                       | Redis database used by vauthenticator authorization server                                                                                 | 0                                                  |
-| application.host                                 | Redis database host used by vauthenticator authorization server                                                                            | vauthenticator-redis-master.auth.svc.cluster.local |
-| application. server.port                         | standard port in which the main tomcat is exposed <br/>**do not touch it!** it is useless lets to use ingress to access to the main tomcat | 8080                                               |
-| application.baseUrl                              | public url to reach the authorization server                                                                                               |                                                    |
-| application.backChannelBaseUrl                   | machine to machine url to reach the authorization server typically it should be kubernetes service                                         | http://vauthenticator:8080                         |
-| application.mailProvider.enabled                 | define if enable mail communication support                                                                                                | false                                              |
-| application.mailProvider.host                    | mail server host                                                                                                                           | localhost                                          |
-| application.mailProvider.port                    | mail server used port                                                                                                                      | 587                                                |
-| application.mailProvider.username                | mail server account username                                                                                                               | ""                                                 |
-| application.mailProvider.password                | mail server account password                                                                                                               | ""                                                 |
-| application.mailProvider.properties              | mail server additional properties                                                                                                          | { }                                                |
-| application.mail.from                            | mail form default field                                                                                                                    | ""                                                 |
-| application.mail.welcomeMailSubject              | subject for welcome mail                                                                                                                   | ""                                                 |
-| application.mail.verificationMailSubject         | subject for account verification mail                                                                                                      | ""                                                 |
-| application.mail.resetPasswordMailSubject        | subject for account password reset                                                                                                         | ""                                                 |
-| application.mail.mfaMailSubject                  | subject for account mfa verification0                                                                                                      | ""                                                 |
-| application.dynamoDb.account.tableName           | Account Table Name                                                                                                                         | your_VAuthenticator_Account_table_name             |
-| application.dynamoDb.account.role.tableName      | Account Roles Table Name                                                                                                                   | your_VAuthenticator_Account_Role_table_name        |
-| application.dynamoDb.role.tableName              | Roles Table Name                                                                                                                           | your_VAuthenticator_Role_table_name                |
-| application.dynamoDb.clientApplication.tableName | Client Applications Table Name                                                                                                             | your_VAuthenticator_ClientApplication_table_name   |
-| application.dynamoDb.mfaAccountMethods.tableName | MFA Account Methods Table Name                                                                                                             | your_VAuthenticator_mfaAccountMethods_table_name   |
-| application.dynamoDb.keys.mfa.tableName          | MFA keys Table Name                                                                                                                        | your_VAuthenticator_Mfa_Keys_table_name            |
-| application.dynamoDb.keys.signature.tableName    | Token Signature Keys Table Name                                                                                                            | your_VAuthenticator_Signature_Keys_table_name      |
-| application.dynamoDb.ticket.tableName            | Ticket used for mail verification, password reset and so on Table Name                                                                     | your_VAuthenticator_Ticket_table_name              |
-| application.documentRepository.bucketName        | S3 Document Storage bucket name                                                                                                            | test                                               |
-| application.mfa.otp.otpLength                    | mfa otp code length                                                                                                                        | 6                                                  |
-| application.mfa.otp.otpTimeToLiveInSeconds       | mfa otp ttl                                                                                                                                | 30                                                 |
-| application.assetServer.baseUrl                  | asset server for login, mfa and other pages                                                                                                | http://localhost:3000/asset                        |
+| Name                                                              | Description                                                                                                                                | Value                                              |
+|-------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------|----------------------------------------------------|
+| application.masterKey                                             | KMS Master key as starting key to generate data key data key pair to sign tokens, MFA and data encryption                                  | your kms key id                                    |
+| application.redis.database                                        | Redis database used by vauthenticator authorization server                                                                                 | 0                                                  |
+| application.host                                                  | Redis database host used by vauthenticator authorization server                                                                            | vauthenticator-redis-master.auth.svc.cluster.local |
+| application. server.port                                          | standard port in which the main tomcat is exposed <br/>**do not touch it!** it is useless lets to use ingress to access to the main tomcat | 8080                                               |
+| application.baseUrl                                               | public url to reach the authorization server                                                                                               |                                                    |
+| application.backChannelBaseUrl                                    | machine to machine url to reach the authorization server typically it should be kubernetes service                                         | http://vauthenticator:8080                         |
+| application.mailProvider.enabled                                  | define if enable mail communication support                                                                                                | false                                              |
+| application.mailProvider.host                                     | mail server host                                                                                                                           | localhost                                          |
+| application.mailProvider.port                                     | mail server used port                                                                                                                      | 587                                                |
+| application.mailProvider.username                                 | mail server account username                                                                                                               | ""                                                 |
+| application.mailProvider.password                                 | mail server account password                                                                                                               | ""                                                 |
+| application.mailProvider.properties                               | mail server additional properties                                                                                                          | { }                                                |
+| application.mail.from                                             | mail form default field                                                                                                                    | ""                                                 |
+| application.mail.welcomeMailSubject                               | subject for welcome mail                                                                                                                   | ""                                                 |
+| application.mail.verificationMailSubject                          | subject for account verification mail                                                                                                      | ""                                                 |
+| application.mail.resetPasswordMailSubject                         | subject for account password reset                                                                                                         | ""                                                 |
+| application.mail.mfaMailSubject                                   | subject for account mfa verification0                                                                                                      | ""                                                 |
+| application.dynamoDb.account.tableName                            | Account Table Name                                                                                                                         | your_VAuthenticator_Account_table_name             |
+| application.dynamoDb.account.role.tableName                       | Account Roles Table Name                                                                                                                   | your_VAuthenticator_Account_Role_table_name        |
+| application.dynamoDb.role.tableName                               | Roles Table Name                                                                                                                           | your_VAuthenticator_Role_table_name                |
+| application.dynamoDb.clientApplication.tableName                  | Client Applications Table Name                                                                                                             | your_VAuthenticator_ClientApplication_table_name   |
+| application.dynamoDb.mfaAccountMethods.tableName                  | MFA Account Methods Table Name                                                                                                             | your_VAuthenticator_mfaAccountMethods_table_name   |
+| application.dynamoDb.keys.mfa.tableName                           | MFA keys Table Name                                                                                                                        | your_VAuthenticator_Mfa_Keys_table_name            |
+| application.dynamoDb.keys.signature.tableName                     | Token Signature Keys Table Name                                                                                                            | your_VAuthenticator_Signature_Keys_table_name      |
+| application.dynamoDb.ticket.tableName                             | Ticket used for mail verification, password reset and so on Table Name                                                                     | your_VAuthenticator_Ticket_table_name              |
+| application.mfa.otp.otpLength                                     | mfa otp code length                                                                                                                        | 6                                                  |
+| application.mfa.otp.otpTimeToLiveInSeconds                        | mfa otp ttl                                                                                                                                | 30                                                 |
+| application.assetServer.baseUrl                                   | asset server for login, mfa and other pages                                                                                                | http://localhost:8080/asset                        |
+| application.assetServer.onS3.enabled                              | enable asset serving form S3                                                                                                               | true/false                                         |
+| application.documentRepository.engine                             | what engine use to get documents S3 or FileSystem                                                                                          | s3/file-system                                     |
+| application.documentRepository.bucketName                         | bucket used to store documents when S3 document engine is enabled                                                                          | your-bucket                                        |
+| application.documentRepository.fsBasePath                         | file system base path to store documents when FileSystem document engine is enabled                                                        | your-base-path                                     |
+| application.documentRepository.documentType.mail.cacheName        | file local cache region name for mail documents                                                                                            | your-base-path                                     |
+| application.documentRepository.documentType.mail.cacheTtl         | file local cache region ttl for mail documents                                                                                             | your-base-path                                     |
+| application.documentRepository.documentType.staticAsset.cacheName | file local cache region name for static asset                                                                                              | your-base-path                                     |
+| application.documentRepository.documentType.staticAsset.cacheTtl  | file local cache region ttl for static asset                                                                                               | your-base-path                                     |
 
 # VAuthenticator Authorization Server Management UI
 
@@ -349,20 +367,42 @@ managementUi:
 
   baseUrl: http://application-example-host.com
 
+  documentRepository:
+    engine: s3
+    bucketName: test
+    fsBasePath: dist
+    documentType:
+      mail:
+        cacheName:
+        cacheTtl: 1m
+      staticAsset:
+        cacheName:
+        cacheTtl: 1m
+
   assetServer:
-    baseUrl: http://localhost:3000/asset
+    onS3:
+      enabled: false
+    baseUrl: http://localhost:8080
 
 ```
 
 #### Properties description
 
-| Name                                    | Description                                                                                                                                | Value                                              |
-|-----------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------|----------------------------------------------------|
-| managementUi.enabled                    | define if management ui have to be deployed                                                                                                | false                                              |
-| managementUi.redis.database             | Redis database used by vauthenticator authorization server                                                                                 | 0                                                  |
-| managementUi.host                       | Redis database host used by vauthenticator authorization server                                                                            | vauthenticator-redis-master.auth.svc.cluster.local |
-| managementUi.server.port                | standard port in which the main tomcat is exposed <br/>**do not touch it!** it is useless lets to use ingress to access to the main tomcat | 8080                                               |
-| managementUi.sso.clientApp.clientId     | client application id used for sso login                                                                                                   | authenticator-management-ui                        |
-| managementUi.sso.clientApp.clientSecret | client application secret used for sso login                                                                                               | secret                                             |
-| managementUi.baseUrl                    | base url used to compute redirect uri and other stuff it is the base url in which you will publish the management app                      | http://application-example-host.com                |
-| managementUi.assetServer.baseUrl        | asset server for login, mfa and other pages                                                                                                | http://localhost:3000/asset                        |
+| Name                                                               | Description                                                                                                                                | Value                                              |
+|--------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------|----------------------------------------------------|
+| managementUi.enabled                                               | define if management ui have to be deployed                                                                                                | false                                              |
+| managementUi.redis.database                                        | Redis database used by vauthenticator authorization server                                                                                 | 0                                                  |
+| managementUi.host                                                  | Redis database host used by vauthenticator authorization server                                                                            | vauthenticator-redis-master.auth.svc.cluster.local |
+| managementUi.server.port                                           | standard port in which the main tomcat is exposed <br/>**do not touch it!** it is useless lets to use ingress to access to the main tomcat | 8080                                               |
+| managementUi.sso.clientApp.clientId                                | client application id used for sso login                                                                                                   | authenticator-management-ui                        |
+| managementUi.sso.clientApp.clientSecret                            | client application secret used for sso login                                                                                               | secret                                             |
+| managementUi.baseUrl                                               | base url used to compute redirect uri and other stuff it is the base url in which you will publish the management app                      | http://application-example-host.com                |
+| managementUi.assetServer.baseUrl                                   | asset server for login, mfa and other pages                                                                                                | http://localhost:8080/asset                        |
+| managementUi.assetServer.onS3.enabled                              | enable asset serving form S3                                                                                                               | true/false                                         |
+| managementUi.documentRepository.engine                             | what engine use to get documents S3 or FileSystem                                                                                          | s3/file-system                                     |
+| managementUi.documentRepository.bucketName                         | bucket used to store documents when S3 document engine is enabled                                                                          | your-bucket                                        |
+| managementUi.documentRepository.fsBasePath                         | file system base path to store documents when FileSystem document engine is enabled                                                        | your-base-path                                     |
+| managementUi.documentRepository.documentType.mail.cacheName        | file local cache region name for mail documents                                                                                            | your-base-path                                     |
+| managementUi.documentRepository.documentType.mail.cacheTtl         | file local cache region ttl for mail documents                                                                                             | your-base-path                                     |
+| managementUi.documentRepository.documentType.staticAsset.cacheName | file local cache region name for static asset                                                                                              | your-base-path                                     |
+| managementUi.documentRepository.documentType.staticAsset.cacheTtl  | file local cache region ttl for static asset                                                                                               | your-base-path                                     |
