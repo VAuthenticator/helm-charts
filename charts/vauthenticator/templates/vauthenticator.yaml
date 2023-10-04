@@ -45,6 +45,7 @@ data:
       policy:
         minSize: {{ .Values.application.password.policy.minSize }}
         minSpecialSymbol: {{ .Values.application.password.policy.minSpecialSymbol }}
+        enablePasswordReusePrevention: {{ .Values.application.password.policy.enablePasswordReusePrevention }}
 
     key:
       master-key: {{ .Values.application.masterKey }}
@@ -159,10 +160,16 @@ data:
           cache:
             ttl: {{ .Values.application.dynamoDb.clientApplication.cache.ttl }}
             name: {{ .Values.application.dynamoDb.clientApplication.cache.name }}
-        mfa-account-methods.table-name: {{ .Values.application.dynamoDb.mfaAccountMethods.tableName  }}
-        keys.mfa.table-name: {{ .Values.application.dynamoDb.keys.mfa.tableName }}
-        keys.signature.table-name: {{ .Values.application.dynamoDb.keys.signature.tableName }}
-        ticket.table-name:  {{ .Values.application.dynamoDb.ticket.tableName }}
+        mfa-account-methods:
+          table-name: {{ .Values.application.dynamoDb.mfaAccountMethods.tableName  }}
+        keys.mfa:
+          table-name: {{ .Values.application.dynamoDb.keys.mfa.tableName }}
+        keys.signature:
+          table-name: {{ .Values.application.dynamoDb.keys.signature.tableName }}
+        ticket:
+          table-name:  {{ .Values.application.dynamoDb.ticket.tableName }}
+        password-history:
+          table-name:  {{ .Values.application.dynamoDb.passwordHistory.tableName }}
       host: {{ .Values.application.baseUrl }}
     {{- if eq .Values.aws.iamUser.enabled true }}
     iamUserAwsCredentialsProvider: true
