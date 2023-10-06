@@ -170,6 +170,8 @@ data:
           table-name:  {{ .Values.application.dynamoDb.ticket.tableName }}
         password-history:
           table-name:  {{ .Values.application.dynamoDb.passwordHistory.tableName }}
+          history-evaluation-limit: {{ .Values.application.dynamoDb.passwordHistory.historyEvaluationLimit }}
+          max-history-allowed-size: {{ .Values.application.dynamoDb.passwordHistory.maxHistoryAllowedSize }}
       host: {{ .Values.application.baseUrl }}
     {{- if eq .Values.aws.iamUser.enabled true }}
     iamUserAwsCredentialsProvider: true

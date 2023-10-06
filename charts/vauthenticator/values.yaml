@@ -150,6 +150,8 @@ application:
       tableName: your_VAuthenticator_Ticket_table_name
     passwordHistory:
       tableName: your_VAuthenticator_Password_History_table_name
+      historyEvaluationLimit: 1
+      maxHistoryAllowedSize: 3
 
   documentRepository:
     engine: s3
