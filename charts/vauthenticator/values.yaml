@@ -24,6 +24,11 @@ imagePullSecrets: [ ]
 
 application:
   password:
+    generator-criteria:
+      upperCaseCharactersSize: 2
+      lowerCaseCharactersSize: 2
+      specialCharactersSize: 2
+      numberCharactersSize: 2
     policy:
       minSize: 1
       minSpecialSymbol: 1
