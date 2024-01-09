@@ -42,6 +42,12 @@ data:
         endpointOverride: {{ .Values.application.aws.dynamodb.endpointOverride }}
 
     password:
+      generator-criteria:
+        upperCaseCharactersSize: {{ .Values.application.password.generatorCriteria.upperCaseCharactersSize }}
+        lowerCaseCharactersSize: {{ .Values.application.password.generatorCriteria.lowerCaseCharactersSize }}
+        specialCharactersSize: {{ .Values.application.password.generatorCriteria.specialCharactersSize }}
+        numberCharactersSize: {{ .Values.application.password.generatorCriteria.numberCharactersSize }}
+
       policy:
         minSize: {{ .Values.application.password.policy.minSize }}
         minSpecialSymbol: {{ .Values.application.password.policy.minSpecialSymbol }}
