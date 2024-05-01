@@ -61,6 +61,7 @@ data:
     assetServer:
       on-s3:
         enabled: {{ .Values.application.assetServer.onS3.enabled }}
+        bundle-version: {{ .Values.application.assetServer.onS3.bundleVersion }}
       baseUrl: {{ .Values.application.assetServer.baseUrl }}
 
     document:

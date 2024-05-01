@@ -178,6 +178,7 @@ application:
   assetServer:
     onS3:
       enabled: false
+      bundleVersion: ""
     baseUrl: http://localhost:8080
 
   events:
