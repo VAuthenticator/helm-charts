@@ -88,7 +88,7 @@ application:
   image:
     repository: mrflick72/vauthenticator-k8s
     pullPolicy: Always
-    tag: "latest"
+    tag: "0.7"
 
   lables: { }
 
@@ -231,7 +231,7 @@ managementUi:
   image:
     repository: mrflick72/vauthenticator-management-ui-k8s
     pullPolicy: Always
-    tag: "latest"
+    tag: "0.7"
 
   lables: { }
 
