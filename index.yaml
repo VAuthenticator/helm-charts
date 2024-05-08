@@ -2,6 +2,21 @@ apiVersion: v1
 entries:
   vauthenticator:
   - apiVersion: v2
+    appVersion: "0.7"
+    created: "2024-05-08T08:22:05.206019944Z"
+    dependencies:
+    - condition: in-namespace.redis.enabled
+      name: redis
+      repository: https://charts.bitnami.com/bitnami
+      version: 17.7.4
+    description: A Helm chart for Kubernetes
+    digest: 2beafec5eddfa2ca4ffa607fa4c636f79454c205f7c9e0d1788c21e0d540664f
+    name: vauthenticator
+    type: application
+    urls:
+    - https://github.com/VAuthenticator/helm-charts/releases/download/vauthenticator-0.7.0/vauthenticator-0.7.0.tgz
+    version: 0.7.0
+  - apiVersion: v2
     appVersion: "0.6"
     created: "2023-07-14T17:46:37.796522029Z"
     dependencies:
@@ -46,4 +61,4 @@ entries:
     urls:
     - https://github.com/VAuthenticator/helm-charts/releases/download/vauthenticator-0.4.0/vauthenticator-0.4.0.tgz
     version: 0.4.0
-generated: "2023-07-14T17:46:37.796538129Z"
+generated: "2024-05-08T08:22:05.206041364Z"
