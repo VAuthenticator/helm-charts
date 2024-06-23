@@ -71,22 +71,22 @@ data:
       document-type:
         mail:
           cache:
-            name: {{ .Values.application.documentRepository.documentType.mail.cacheName }}
-            ttl: {{ .Values.application.documentRepository.documentType.mail.cacheTtl }}
+            name: {{ .Values.application.documentRepository.documentType.email.cacheName }}
+            ttl: {{ .Values.application.documentRepository.documentType.email.cacheTtl }}
         static-asset:
           cache:
             name: {{ .Values.application.documentRepository.documentType.staticAsset.cacheName }}
             ttl: {{ .Values.application.documentRepository.documentType.staticAsset.cacheTtl }}
 
 
-    {{- if eq .Values.application.mailProvider.enabled true }}
+    {{- if eq .Values.application.emailProvider.enabled true }}
     no-reply:
       mail:
-        from: {{ .Values.application.mail.from }}
-        welcomeMailSubject: {{ .Values.application.mail.welcomeMailSubject }}
-        verificationMailSubject: {{ .Values.application.mail.verificationMailSubject }}
-        resetPasswordMailSubject: {{ .Values.application.mail.resetPasswordMailSubject }}
-        mfaMailSubject: {{ .Values.application.mail.mfaMailSubject }}
+        from: {{ .Values.application.email.from }}
+        welcomeMailSubject: {{ .Values.application.email.welcomeEMailSubject }}
+        verificationMailSubject: {{ .Values.application.email.verificationEMailSubject }}
+        resetPasswordMailSubject: {{ .Values.application.email.resetPasswordEMailSubject }}
+        mfaMailSubject: {{ .Values.application.email.mfaEMailSubject }}
   {{- end }}
 
     event:
@@ -101,14 +101,14 @@ data:
     spring:
       main:
         lazy-initialization: false
-    {{- if eq .Values.application.mailProvider.enabled true }}
+    {{- if eq .Values.application.emailProvider.enabled true }}
       mail:
-        host: {{ .Values.application.mailProvider.host }}
-        port: {{ .Values.application.mailProvider.port }}
-        username: {{ .Values.application.mailProvider.username }}
-        password: {{ .Values.application.mailProvider.password }}
+        host: {{ .Values.application.emailProvider.host }}
+        port: {{ .Values.application.emailProvider.port }}
+        username: {{ .Values.application.emailProvider.username }}
+        password: {{ .Values.application.emailProvider.password }}
         properties:
-        {{- toYaml .Values.application.mailProvider.properties | nindent 10 }}
+        {{- toYaml .Values.application.emailProvider.properties | nindent 10 }}
 
     {{- end }}
 

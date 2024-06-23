@@ -110,7 +110,7 @@ application:
   backChannelBaseUrl: http://vauthenticator:8080
 
 
-  mailProvider:
+  emailProvider:
     enabled: false
     host: localhost
     port: 587
@@ -118,12 +118,12 @@ application:
     password: ""
     properties: { }
 
-  mail:
+  email:
     from: ""
-    welcomeMailSubject: ""
-    verificationMailSubject: ""
-    resetPasswordMailSubject: ""
-    mfaMailSubject: ""
+    welcomeEMailSubject: ""
+    verificationEMailSubject: ""
+    resetPasswordEMailSubject: ""
+    mfaEMailSubject: ""
 
   dynamoDb:
     account:
@@ -163,7 +163,7 @@ application:
     bucketName: test
     fsBasePath: dist
     documentType:
-      mail:
+      email:
         cacheName:
         cacheTtl: 1m
       staticAsset:
