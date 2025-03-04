@@ -42,6 +42,9 @@ data:
         endpointOverride: {{ .Values.application.aws.dynamodb.endpointOverride }}
 
     password:
+      password-history:
+        history-evaluation-limit: {{ .Values.application.password.history.evaluationLimit }}
+        max-history-allowed-size: {{ .Values.application.password.history.maxHistoryAllowedSize }}
       generator-criteria:
         upperCaseCharactersSize: {{ .Values.application.password.generatorCriteria.upperCaseCharactersSize }}
         lowerCaseCharactersSize: {{ .Values.application.password.generatorCriteria.lowerCaseCharactersSize }}
@@ -54,7 +57,11 @@ data:
         enablePasswordReusePrevention: {{ .Values.application.password.policy.enablePasswordReusePrevention }}
 
     key:
-      master-key: {{ .Values.application.masterKey }}
+      master-key:
+        storage:
+          content:
+            key: {{ .Values.application.masterKey }}
+            
     oidcEndSessionUrl: {{ .Values.application.baseUrl }}/oidc/logout
     auth.oidcIss: {{ .Values.application.baseUrl }}
 

@@ -24,6 +24,9 @@ imagePullSecrets: [ ]
 
 application:
   password:
+    history:
+      evaluationLimit: 1
+      maxHistoryAllowedSize: 3
     generatorCriteria:
       upperCaseCharactersSize: 2
       lowerCaseCharactersSize: 2
