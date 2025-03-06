@@ -23,6 +23,7 @@ aws:
 imagePullSecrets: [ ]
 
 application:
+  profiles: dynamo,kms
   password:
     history:
       evaluationLimit: 1

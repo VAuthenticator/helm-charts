@@ -106,6 +106,9 @@ data:
         timeToLiveInSeconds: {{ .Values.application.mfa.otp.otpTimeToLiveInSeconds }}
 
     spring:
+      profiles:
+        active: {{ .Values.application.profiles }}
+
       main:
         lazy-initialization: false
     {{- if eq .Values.application.emailProvider.enabled true }}
