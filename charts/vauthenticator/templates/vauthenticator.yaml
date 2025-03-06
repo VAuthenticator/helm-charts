@@ -58,6 +58,7 @@ data:
 
     key:
       master-key:
+        value: {{ .Values.application.masterKey }}
         storage:
           content:
             key: {{ .Values.application.masterKey }}
