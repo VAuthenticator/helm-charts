@@ -166,7 +166,7 @@ data:
           cache:
             ttl: {{ .Values.application.dynamoDb.account.cache.ttl }}
             name: {{ .Values.application.dynamoDb.account.cache.name }}
-        account.role.table-name: {{ .Values.application.dynamoDb.account.role.tableName }}
+          role.table-name: {{ .Values.application.dynamoDb.account.role.tableName }}
         role:
           table-name: {{ .Values.application.dynamoDb.role.tableName }}
           cache:
@@ -178,18 +178,22 @@ data:
           cache:
             ttl: {{ .Values.application.dynamoDb.clientApplication.cache.ttl }}
             name: {{ .Values.application.dynamoDb.clientApplication.cache.name }}
-        mfa-account-methods:
-          table-name: {{ .Values.application.dynamoDb.mfaAccountMethods.tableName  }}
-        keys.mfa:
-          table-name: {{ .Values.application.dynamoDb.keys.mfa.tableName }}
-        keys.signature:
-          table-name: {{ .Values.application.dynamoDb.keys.signature.tableName }}
-        ticket:
-          table-name:  {{ .Values.application.dynamoDb.ticket.tableName }}
         password-history:
           table-name:  {{ .Values.application.dynamoDb.passwordHistory.tableName }}
           history-evaluation-limit: {{ .Values.application.dynamoDb.passwordHistory.historyEvaluationLimit }}
           max-history-allowed-size: {{ .Values.application.dynamoDb.passwordHistory.maxHistoryAllowedSize }}
+        keys:
+          mfa:
+            table-name: {{ .Values.application.dynamoDb.keys.mfa.tableName }}
+          signature:
+            table-name: {{ .Values.application.dynamoDb.keys.signature.tableName }}
+        ticket:
+          table-name:  {{ .Values.application.dynamoDb.ticket.tableName }}
+        mfa-account-methods:
+          table-name: {{ .Values.application.dynamoDb.mfaAccountMethods.tableName  }}
+        default-mfa-account-methods:
+          table-name: {{ .Values.application.dynamoDb.defaultMfaAccountMethods.tableName  }}
+
       host: {{ .Values.application.baseUrl }}
     {{- if eq .Values.aws.iamUser.enabled true }}
     iamUserAwsCredentialsProvider: true
