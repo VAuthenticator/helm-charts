@@ -166,7 +166,6 @@ data:
           cache:
             ttl: {{ .Values.application.dynamoDb.account.cache.ttl }}
             name: {{ .Values.application.dynamoDb.account.cache.name }}
-          role.table-name: {{ .Values.application.dynamoDb.account.role.tableName }}
         role:
           table-name: {{ .Values.application.dynamoDb.role.tableName }}
           cache:
