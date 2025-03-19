@@ -89,12 +89,12 @@ data:
 
     {{- if eq .Values.application.emailProvider.enabled true }}
     no-reply:
-      mail:
+      email:
         from: {{ .Values.application.email.from }}
-        welcomeMailSubject: {{ .Values.application.email.welcomeEMailSubject }}
-        verificationMailSubject: {{ .Values.application.email.verificationEMailSubject }}
-        resetPasswordMailSubject: {{ .Values.application.email.resetPasswordEMailSubject }}
-        mfaMailSubject: {{ .Values.application.email.mfaEMailSubject }}
+        welcomeEMailSubject: {{ .Values.application.email.welcomeEMailSubject }}
+        verificationEMailSubject: {{ .Values.application.email.verificationEMailSubject }}
+        resetPasswordEMailSubject: {{ .Values.application.email.resetPasswordEMailSubject }}
+        mfaEMailSubject: {{ .Values.application.email.mfaEMailSubject }}
   {{- end }}
 
     event:
