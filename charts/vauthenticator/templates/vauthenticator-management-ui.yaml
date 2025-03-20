@@ -66,13 +66,22 @@ data:
                 client-name: VAuthenticator Management UI
                 provider: vauthenticator
                 scope:
-                  - "openid"
-                  - "profile"
-                  - "email"
-                  - "admin:key-reader"
-                  - "admin:key-editor"
-                  - "admin:email-template-reader"
-                  - "admin:email-template-writer"
+                  - openid
+                  - profile
+                  - email
+                  - admin:welcome
+                  - admin:email-verify
+                  - admin:reset-password
+                  - admin:change-password
+                  - admin:generate-password
+                  - admin:key-reader
+                  - admin:key-editor
+                  - admin:email-template-reader
+                  - admin:email-template-writer
+                  - mfa:enrollment
+                  - admin:client-app-reader
+                  - admin:client-app-writer
+                  - admin:client-app-eraser
                 redirect-uri: {{ .Values.managementUi.baseUrl }}/login/oauth2/code/client
                 authorization-grant-type: authorization_code
             provider:
