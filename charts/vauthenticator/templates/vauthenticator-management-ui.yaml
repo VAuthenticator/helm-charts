@@ -69,6 +69,7 @@ data:
                   - openid
                   - profile
                   - email
+                  - mfa:always
                   - admin:welcome
                   - admin:email-verify
                   - admin:reset-password
