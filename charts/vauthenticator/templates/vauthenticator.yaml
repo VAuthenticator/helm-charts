@@ -138,6 +138,8 @@ data:
       forward-headers-strategy: framework
       servlet:
         context-path: /
+        session:
+          timeout: {{ .Values.application.sessionTimeout }}
       http2:
         enabled: true
       compression:
