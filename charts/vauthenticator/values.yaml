@@ -23,7 +23,12 @@ aws:
 imagePullSecrets: [ ]
 
 application:
+  sessionTimeout: 24h
+  profiles: dynamo,kms
   password:
+    history:
+      evaluationLimit: 1
+      maxHistoryAllowedSize: 3
     generatorCriteria:
       upperCaseCharactersSize: 2
       lowerCaseCharactersSize: 2
@@ -88,7 +93,7 @@ application:
   image:
     repository: mrflick72/vauthenticator-k8s
     pullPolicy: Always
-    tag: "0.7"
+    tag: "0.8"
 
   lables: { }
 
@@ -143,9 +148,11 @@ application:
       tableName: your_VAuthenticator_ClientApplication_table_name
       cache:
         ttl: 1h
-        name: client-application
+        name: client_application
     mfaAccountMethods:
       tableName: your_VAuthenticator_mfaAccountMethods_table_name
+    defaultMfaAccountMethods:
+      tableName: your_VAuthenticator_defaultMfaAccountMethods_table_name
     keys:
       mfa:
         tableName: your_VAuthenticator_Mfa_Keys_table_name
@@ -231,7 +238,7 @@ managementUi:
   image:
     repository: mrflick72/vauthenticator-management-ui-k8s
     pullPolicy: Always
-    tag: "0.7"
+    tag: "0.8"
 
   lables: { }
 

@@ -42,6 +42,9 @@ data:
         endpointOverride: {{ .Values.application.aws.dynamodb.endpointOverride }}
 
     password:
+      password-history:
+        history-evaluation-limit: {{ .Values.application.password.history.evaluationLimit }}
+        max-history-allowed-size: {{ .Values.application.password.history.maxHistoryAllowedSize }}
       generator-criteria:
         upperCaseCharactersSize: {{ .Values.application.password.generatorCriteria.upperCaseCharactersSize }}
         lowerCaseCharactersSize: {{ .Values.application.password.generatorCriteria.lowerCaseCharactersSize }}
@@ -54,7 +57,12 @@ data:
         enablePasswordReusePrevention: {{ .Values.application.password.policy.enablePasswordReusePrevention }}
 
     key:
-      master-key: {{ .Values.application.masterKey }}
+      master-key:
+        id: {{ .Values.application.masterKey }}
+        storage:
+          content:
+            key: {{ .Values.application.masterKey }}
+            
     oidcEndSessionUrl: {{ .Values.application.baseUrl }}/oidc/logout
     auth.oidcIss: {{ .Values.application.baseUrl }}
 
@@ -81,12 +89,12 @@ data:
 
     {{- if eq .Values.application.emailProvider.enabled true }}
     no-reply:
-      mail:
+      email:
         from: {{ .Values.application.email.from }}
-        welcomeMailSubject: {{ .Values.application.email.welcomeEMailSubject }}
-        verificationMailSubject: {{ .Values.application.email.verificationEMailSubject }}
-        resetPasswordMailSubject: {{ .Values.application.email.resetPasswordEMailSubject }}
-        mfaMailSubject: {{ .Values.application.email.mfaEMailSubject }}
+        welcomeEMailSubject: {{ .Values.application.email.welcomeEMailSubject }}
+        verificationEMailSubject: {{ .Values.application.email.verificationEMailSubject }}
+        resetPasswordEMailSubject: {{ .Values.application.email.resetPasswordEMailSubject }}
+        mfaEMailSubject: {{ .Values.application.email.mfaEMailSubject }}
   {{- end }}
 
     event:
@@ -99,6 +107,9 @@ data:
         timeToLiveInSeconds: {{ .Values.application.mfa.otp.otpTimeToLiveInSeconds }}
 
     spring:
+      profiles:
+        active: {{ .Values.application.profiles }}
+
       main:
         lazy-initialization: false
     {{- if eq .Values.application.emailProvider.enabled true }}
@@ -127,6 +138,8 @@ data:
       forward-headers-strategy: framework
       servlet:
         context-path: /
+        session:
+          timeout: {{ .Values.application.sessionTimeout }}
       http2:
         enabled: true
       compression:
@@ -155,7 +168,6 @@ data:
           cache:
             ttl: {{ .Values.application.dynamoDb.account.cache.ttl }}
             name: {{ .Values.application.dynamoDb.account.cache.name }}
-        account.role.table-name: {{ .Values.application.dynamoDb.account.role.tableName }}
         role:
           table-name: {{ .Values.application.dynamoDb.role.tableName }}
           cache:
@@ -167,18 +179,22 @@ data:
           cache:
             ttl: {{ .Values.application.dynamoDb.clientApplication.cache.ttl }}
             name: {{ .Values.application.dynamoDb.clientApplication.cache.name }}
-        mfa-account-methods:
-          table-name: {{ .Values.application.dynamoDb.mfaAccountMethods.tableName  }}
-        keys.mfa:
-          table-name: {{ .Values.application.dynamoDb.keys.mfa.tableName }}
-        keys.signature:
-          table-name: {{ .Values.application.dynamoDb.keys.signature.tableName }}
-        ticket:
-          table-name:  {{ .Values.application.dynamoDb.ticket.tableName }}
         password-history:
           table-name:  {{ .Values.application.dynamoDb.passwordHistory.tableName }}
           history-evaluation-limit: {{ .Values.application.dynamoDb.passwordHistory.historyEvaluationLimit }}
           max-history-allowed-size: {{ .Values.application.dynamoDb.passwordHistory.maxHistoryAllowedSize }}
+        keys:
+          mfa:
+            table-name: {{ .Values.application.dynamoDb.keys.mfa.tableName }}
+          signature:
+            table-name: {{ .Values.application.dynamoDb.keys.signature.tableName }}
+        ticket:
+          table-name:  {{ .Values.application.dynamoDb.ticket.tableName }}
+        mfa-account-methods:
+          table-name: {{ .Values.application.dynamoDb.mfaAccountMethods.tableName  }}
+        default-mfa-account-methods:
+          table-name: {{ .Values.application.dynamoDb.defaultMfaAccountMethods.tableName  }}
+
       host: {{ .Values.application.baseUrl }}
     {{- if eq .Values.aws.iamUser.enabled true }}
     iamUserAwsCredentialsProvider: true
